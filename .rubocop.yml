@@ -1,3 +1,15 @@
 require:
   - rubocop-rspec
   - rubocop-rails
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Rails/NotNullColumn:
+  Enabled: false

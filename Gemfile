@@ -26,6 +26,10 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # gem 'rack-cors'
 
 gem 'aws-sdk-s3'
+
+# Generate easily slugs for models https://github.com/norman/friendly_id
+gem 'friendly_id'
+
 gem 'net-smtp'
 
 group :development, :test do
@@ -33,6 +37,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'guard-rspec'
   gem 'rspec-rails'
   gem 'rubocop-rails'
