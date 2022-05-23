@@ -30,5 +30,11 @@ RSpec.describe ProductContent, type: :model do
 
       it { expect(attachment_content.valid?).to eq(false) }
     end
+
+    describe 'when content has no value nor attachment provided' do
+      subject(:empty_content) { build(:product_content, value: nil, files: nil) }
+
+      it { expect(empty_content.valid?).to eq(false) }
+    end
   end
 end
