@@ -37,6 +37,8 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 5.0'
   gem 'guard-rspec'
   gem 'simplecov'
+  gem 'rubocop-rspec'
+  gem 'rubocop-rails'
 end
 
 group :development do
