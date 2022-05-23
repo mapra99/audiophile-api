@@ -10,10 +10,13 @@ jobs:
         with:
           ruby-version: 3.1.0
 
-      - name: Install dependent libraries
-        run: |
-          gem install rubocop-rails
-          gem install rubocop-rspec
+      # - name: Install System dependencies
+      #   run: sudo apt-get install libpq-dev
+
+      # - name: Bundle install
+      #   run: |
+      #     gem install bundler
+      #     bundle install --jobs 4 --retry 3
 
       - name: RuboCop Linter Action
         uses: andrewmcodes-archive/rubocop-linter-action@v3.3.0

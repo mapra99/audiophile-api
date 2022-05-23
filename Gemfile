@@ -28,6 +28,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'net-smtp'
 gem "aws-sdk-s3"
 
+gem 'rubocop-rspec'
+gem 'rubocop-rails'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -37,8 +40,6 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 5.0'
   gem 'guard-rspec'
   gem 'simplecov'
-  gem 'rubocop-rspec'
-  gem 'rubocop-rails'
 end
 
 group :development do
