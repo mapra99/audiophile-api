@@ -4,7 +4,7 @@ class Product < ApplicationRecord
   friendly_id :name, use: :slugged
 
   has_one_attached :image
-  has_many :product_contents
+  has_many :product_contents, dependent: :destroy
   belongs_to :product_category
 
   validates :name, presence: true, uniqueness: true

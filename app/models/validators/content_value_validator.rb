@@ -9,16 +9,14 @@ module Validators
 
     private
 
+    attr_reader :record
+
     def value_and_files_present?
       record.files.present? && record.value.present?
     end
 
     def value_and_files_blank?
       record.files.blank? && record.value.blank?
-    end
-
-    def record
-      @record
     end
   end
 end
