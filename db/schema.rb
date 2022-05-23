@@ -45,18 +45,19 @@ ActiveRecord::Schema.define(version: 2022_05_23_040246) do
 
   create_table "product_categories", force: :cascade do |t|
     t.string "name", null: false
+    t.string "slug", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["name"], name: "index_product_categories_on_name", unique: true
+    t.index ["slug"], name: "index_product_categories_on_slug", unique: true
   end
 
   create_table "product_contents", force: :cascade do |t|
     t.string "key", null: false
-    t.text "value", null: false
+    t.text "value"
     t.bigint "product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["key", "value", "product_id"], name: "index_product_contents_on_key_and_value_and_product_id", unique: true
+    t.index ["key", "product_id"], name: "index_product_contents_on_key_and_product_id", unique: true
     t.index ["key"], name: "index_product_contents_on_key"
     t.index ["product_id"], name: "index_product_contents_on_product_id"
   end
@@ -70,7 +71,6 @@ ActiveRecord::Schema.define(version: 2022_05_23_040246) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "product_category_id", null: false
     t.index ["featured"], name: "index_products_on_featured"
-    t.index ["name"], name: "index_products_on_name", unique: true
     t.index ["product_category_id"], name: "index_products_on_product_category_id"
     t.index ["slug"], name: "index_products_on_slug", unique: true
   end

@@ -1,4 +1,12 @@
 class Product < ApplicationRecord
+  extend FriendlyId
+
+  friendly_id :name, use: :slugged
+
   has_one_attached :image
-  belongs_to :category, class_name: 'ProductCategory', foreign_key: 'product_category_id'
+  has_many :product_contents
+  belongs_to :product_category
+
+  validates :name, presence: true, uniqueness: true
+  validates :base_price, presence: true
 end
