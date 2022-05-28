@@ -16,3 +16,4 @@ SimpleCov.start 'rails' do
   add_group 'Services', 'app/services'
   add_group 'Jobs', 'app/sidekiq'
 end
+
