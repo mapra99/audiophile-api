@@ -1,11 +1,11 @@
 class ApplicationController < ActionController::API
   GLOBAL_ERROR_CODES = {
     internal_error: 500
-  }
+  }.freeze
 
   GLOBAL_ERROR_MESSAGES = {
     internal_error: 'Internal Server Error'
-  }
+  }.freeze
 
   private
 
