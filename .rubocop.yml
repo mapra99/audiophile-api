@@ -13,3 +13,6 @@ Style/Documentation:
 
 Rails/NotNullColumn:
   Enabled: false
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never

@@ -91,6 +91,11 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    dry-core (0.7.1)
+      concurrent-ruby (~> 1.0)
+    dry-monads (1.4.0)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 0.7)
     erubi (1.10.0)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
@@ -121,6 +126,9 @@ GEM
       rspec (>= 2.99.0, < 4.0)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
+    jbuilder (2.11.5)
+      actionview (>= 5.0.0)
+      activesupport (>= 5.0.0)
     jmespath (1.6.1)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -272,10 +280,12 @@ DEPENDENCIES
   bootsnap (>= 1.4.4)
   byebug
   dotenv-rails
+  dry-monads
   factory_bot_rails
   faker
   friendly_id
   guard-rspec
+  jbuilder (~> 2.7)
   listen (~> 3.3)
   net-smtp
   pg (~> 1.1)

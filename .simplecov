@@ -2,17 +2,19 @@
 # https://github.com/simplecov-ruby/simplecov
 # https://rubydoc.info/gems/simplecov/SimpleCov/Configuration
 
-SimpleCov.start 'rails' do
-  enable_coverage :branch
-  primary_coverage :branch
+if ENV['COVERAGE'] == 'true'
+  SimpleCov.start 'rails' do
+    enable_coverage :branch
+    primary_coverage :line
 
-  minimum_coverage 83
-  maximum_coverage_drop 5
+    minimum_coverage 83
+    maximum_coverage_drop 5
 
-  add_filter 'app/channels' # deferring until we need ActionCable
-  add_filter 'app/mailer' # deferring until we need ActionMailer
-  add_filter 'app/scripts'
+    add_filter 'app/channels' # deferring until we need ActionCable
+    add_filter 'app/mailer' # deferring until we need ActionMailer
+    add_filter 'app/scripts'
 
-  add_group 'Services', 'app/services'
-  add_group 'Jobs', 'app/sidekiq'
+    add_group 'Services', 'app/services'
+    add_group 'Jobs', 'app/sidekiq'
+  end
 end

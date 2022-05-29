@@ -46,10 +46,12 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           REDISCLOUD_URL: redis://localhost:6379
+          COVERAGE: false
 
       - name: Run RSpec
-        run: COVERAGE=true bundle exec rspec  --require rails_helper
+        run: bundle exec rspec  --require rails_helper
         env:
           RAILS_ENV: test
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+          COVERAGE: true
