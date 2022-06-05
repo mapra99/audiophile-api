@@ -15,7 +15,7 @@ RSpec.describe ProductContent, type: :model do
       subject(:text_content) { build(:text_product_content) }
 
       before do
-        text_content.files = [Rack::Test::UploadedFile.new('spec/files/product_image.png', 'image/png')]
+        text_content.files = [Rack::Test::UploadedFile.new('spec/fixtures/files/product_image.png', 'image/png')]
       end
 
       it { expect(text_content.valid?).to eq(false) }

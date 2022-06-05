@@ -8,7 +8,7 @@ FactoryBot.define do
     end
 
     factory :attachment_product_content do
-      files { [Rack::Test::UploadedFile.new('spec/files/product_image.png', 'image/png')] }
+      files { [Rack::Test::UploadedFile.new('spec/fixtures/files/product_image.png', 'image/png')] }
     end
   end
 end
