@@ -29,6 +29,14 @@ module Admin
         @product = result.value!
       end
 
+      def show
+        finder = Admin::V1::Products::Finder.new(product_id: params[:id])
+        result = finder.call
+        return render_error_from(result) if result.failure?
+
+        @product = result.value!
+      end
+
       private
 
       def filter_params
