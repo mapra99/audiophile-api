@@ -70,7 +70,7 @@ RSpec.describe Admin::V1::Products::CollectionBuilder do
     end
 
     it 'provides an error code' do
-      expect(result.failure).to eq(:internal_error)
+      expect(result.failure).to eq({ code: :internal_error })
     end
   end
 end
