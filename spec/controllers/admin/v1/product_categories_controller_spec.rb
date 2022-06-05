@@ -54,7 +54,8 @@ RSpec.describe Admin::V1::ProductCategoriesController, type: :controller do
 
     describe 'when creator fails due to product category not saved' do
       let(:creator_result) do
-        instance_double('Creator Result', success?: false, failure?: true, failure: { code: :product_category_not_saved })
+        instance_double('Creator Result', success?: false, failure?: true,
+                                          failure: { code: :product_category_not_saved })
       end
 
       it 'returns a 500 status' do

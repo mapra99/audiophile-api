@@ -43,7 +43,8 @@ module Admin
           raise ServiceError, Failure({ code: :product_category_not_saved })
         rescue ActiveRecord::RecordInvalid => e
           Rails.logger.error(e)
-          raise ServiceError, Failure({ code: :invalid_product_category, message: product_category.errors.full_messages })
+          raise ServiceError,
+                Failure({ code: :invalid_product_category, message: product_category.errors.full_messages })
         end
       end
     end
