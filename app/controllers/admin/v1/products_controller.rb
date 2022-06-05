@@ -5,13 +5,13 @@ module Admin
         category_not_found: 400,
         product_not_saved: 500,
         invalid_product: 422
-      }
+      }.freeze
 
       PRODUCT_ERROR_MESSAGES = {
         category_not_found: 'Could not find product category',
         product_not_saved: 'Could not save product',
         invalid_product: 'Product is invalid: '
-      }
+      }.freeze
 
       def index
         collection_builder = Admin::V1::Products::CollectionBuilder.new

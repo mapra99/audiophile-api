@@ -102,7 +102,8 @@ RSpec.describe Admin::V1::ProductsController, type: :controller do
 
     describe 'when creator fails due to validation error' do
       let(:creator_result) do
-        instance_double('Creator Result', success?: false, failure?: true, failure: { code: :invalid_product, message: ["Error"] })
+        instance_double('Creator Result', success?: false, failure?: true,
+                                          failure: { code: :invalid_product, message: ['Error'] })
       end
 
       it 'returns a 422 status' do

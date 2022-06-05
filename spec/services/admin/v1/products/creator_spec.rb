@@ -68,7 +68,7 @@ RSpec.describe Admin::V1::Products::Creator do
     end
 
     describe "when category is't found" do
-      let(:category_id) { "something" }
+      let(:category_id) { 'something' }
 
       it 'returns a failure' do
         expect(result.failure?).to eq(true)
