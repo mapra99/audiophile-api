@@ -10,7 +10,8 @@ RSpec.describe Admin::V1::Products::Creator do
       name: 'Some Product',
       price: 450,
       featured: false,
-      category_id: category_id
+      category_id: category_id,
+      image: fixture_file_upload('product_image.png', 'image/png')
     }
   end
 
@@ -46,6 +47,10 @@ RSpec.describe Admin::V1::Products::Creator do
 
       it 'has a category id per the params' do
         expect(new_product.product_category.id).to eq(params[:category_id])
+      end
+
+      it 'has a image attached' do
+        expect(new_product.image.attached?).to eq(true)
       end
     end
 

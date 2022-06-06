@@ -55,7 +55,8 @@ RSpec.describe Admin::V1::ProductsController, type: :controller do
           name: 'Some Product',
           price: 450,
           featured: false,
-          category_id: product_category.id
+          category_id: product_category.id,
+          image: fixture_file_upload('product_image.png', 'image/png')
         }
       }
     end

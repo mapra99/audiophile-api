@@ -12,6 +12,7 @@ module Admin
 
         def call
           build_product
+          attach_image
           find_and_set_category
           save_product
         rescue ServiceError => e
@@ -31,6 +32,10 @@ module Admin
             base_price: params[:price],
             featured: params[:featured]
           )
+        end
+
+        def attach_image
+          product.image.attach(params[:image])
         end
 
         def find_and_set_category

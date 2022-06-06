@@ -44,7 +44,7 @@ module Admin
       end
 
       def product_params
-        params.require(:product).permit(:name, :price, :featured, :category_id)
+        params.require(:product).permit(:name, :price, :featured, :category_id, :image)
       end
 
       def error_status_code(error)
