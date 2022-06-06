@@ -19,7 +19,19 @@ module Admin
         @product_category = result.value!
       end
 
+      def index
+        collection_builder = Admin::V1::ProductCategories::CollectionBuilder.new
+        result = collection_builder.call(filters: filter_params)
+        return render_error_from(result) if result.failure?
+
+        @product_categories = result.value!
+      end
+
       private
+
+      def filter_params
+        params.permit(:name)
+      end
 
       def product_category_params
         params.permit(:name, :image)
