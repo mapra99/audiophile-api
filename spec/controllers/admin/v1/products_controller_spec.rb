@@ -51,13 +51,11 @@ RSpec.describe Admin::V1::ProductsController, type: :controller do
     let(:product_category) { create(:product_category) }
     let(:payload) do
       {
-        product: {
-          name: 'Some Product',
-          price: 450,
-          featured: false,
-          category_id: product_category.id,
-          image: fixture_file_upload('product_image.png', 'image/png')
-        }
+        name: 'Some Product',
+        price: 450,
+        featured: false,
+        category_id: product_category.id,
+        image: fixture_file_upload('product_image.png', 'image/png')
       }
     end
     let(:created_product) { create(:product) }
