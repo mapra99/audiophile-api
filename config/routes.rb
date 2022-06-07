@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :products, only: %i[create index show]
       resources :product_categories, only: %i[create index]
-      # resources :product_contents
+      resources :product_contents, only: %i[create]
     end
   end
 end
