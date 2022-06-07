@@ -1,12 +1,14 @@
 class ApplicationController < ActionController::API
   GLOBAL_ERROR_CODES = {
     internal_error: 500,
-    not_found: 404
+    not_found: 404,
+    wrong_params: 400
   }.freeze
 
   GLOBAL_ERROR_MESSAGES = {
     internal_error: 'Internal Server Error',
-    not_found: 'Resource Not Found'
+    not_found: 'Resource Not Found',
+    wrong_params: 'Bad request'
   }.freeze
 
   private
@@ -27,7 +29,7 @@ class ApplicationController < ActionController::API
   end
 
   def error_message(error)
-    message = GLOBAL_ERROR_MESSAGES[error[:code]]
+    message = error[:message] || GLOBAL_ERROR_MESSAGES[error[:code]]
     raise StandardError "Error message could not be processed for error #{error}" if message.blank?
 
     message
