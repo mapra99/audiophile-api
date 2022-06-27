@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resource :health, only: [:show], controller: :health
       resources :product_categories, only: %i[index]
+      resources :products, only: %i[index show]
     end
   end
 end
