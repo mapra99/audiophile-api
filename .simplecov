@@ -15,6 +15,6 @@ if ENV['COVERAGE'] == 'true'
     add_filter 'app/scripts'
 
     add_group 'Services', 'app/services'
-    add_group 'Jobs', 'app/sidekiq'
+    add_group 'Jobs', 'app/jobs'
   end
 end
