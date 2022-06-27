@@ -10,7 +10,7 @@ module Api
       end
 
       def show
-        finder = Api::V1::Products::Finder.new(product_id: params[:id])
+        finder = Api::V1::Products::Finder.new(slug: params[:slug])
         result = finder.call
         return render_error_from(result) if result.failure?
 

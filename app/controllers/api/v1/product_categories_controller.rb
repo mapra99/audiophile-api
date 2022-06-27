@@ -8,6 +8,14 @@ module Api
 
         @product_categories = result.value!
       end
+
+      def show
+        finder = Api::V1::ProductCategories::Finder.new(slug: params[:slug])
+        result = finder.call
+        return render_error_from(result) if result.failure?
+
+        @product_category = result.value!
+      end
     end
   end
 end
