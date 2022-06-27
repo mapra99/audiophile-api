@@ -1,15 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe Api::V1::Products::Finder do
-  subject(:finder) { described_class.new(slug: product_slug) }
+RSpec.describe Api::V1::ProductCategories::Finder do
+  subject(:finder) { described_class.new(slug: category_slug) }
 
-  let(:product_slug) { Product.last.slug }
+  let(:category_slug) { ProductCategory.last.slug }
 
   describe '#call' do
     subject(:result) { finder.call }
 
     before do
-      create(:product)
+      create(:product_category)
     end
 
     it 'succeeds' do
@@ -17,11 +17,11 @@ RSpec.describe Api::V1::Products::Finder do
     end
 
     it 'returns the found product' do
-      expect(result.value!).to eq(Product.last)
+      expect(result.value!).to eq(ProductCategory.last)
     end
 
     describe 'when product is not found' do
-      let(:product_slug) { nil }
+      let(:category_slug) { nil }
 
       it 'fails' do
         expect(result.failure?).to eq(true)

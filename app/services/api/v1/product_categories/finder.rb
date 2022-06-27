@@ -1,19 +1,19 @@
 module Api
   module V1
-    module Products
+    module ProductCategories
       class Finder
         include Dry::Monads[:result]
 
-        attr_reader :product
+        attr_reader :product_category
 
         def initialize(slug:)
           self.slug = slug
         end
 
         def call
-          result = Product.find_by!(slug: slug)
+          result = ProductCategory.find_by!(slug: slug)
 
-          self.product = result
+          self.product_category = result
           Success(result)
         rescue ActiveRecord::RecordNotFound => e
           Rails.logger.error(e)
@@ -23,7 +23,7 @@ module Api
         private
 
         attr_accessor :slug
-        attr_writer :product
+        attr_writer :product_category
       end
     end
   end

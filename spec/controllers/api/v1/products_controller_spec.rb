@@ -58,7 +58,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       allow(Api::V1::Products::Finder).to receive(:new).and_return finder
 
       request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
-      get :show, format: :json, params: { id: product.id }
+      get :show, format: :json, params: { slug: product.slug }
     end
 
     it 'calls the collection builder service' do
@@ -82,7 +82,7 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     describe 'when not authenticated' do
       before do
         request.headers['X-AUDIOPHILE-KEY'] = nil
-        get :show, format: :json, params: { id: product.id }
+        get :show, format: :json, params: { slug: product.slug }
       end
 
       it 'returns a 401 error' do

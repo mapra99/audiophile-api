@@ -16,8 +16,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resource :health, only: [:show], controller: :health
-      resources :product_categories, only: %i[index]
-      resources :products, only: %i[index show]
+      resources :product_categories, only: %i[index show], param: :slug
+      resources :products, only: %i[index show], param: :slug
     end
   end
 end
