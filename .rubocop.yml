@@ -16,3 +16,6 @@ Rails/NotNullColumn:
 
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
