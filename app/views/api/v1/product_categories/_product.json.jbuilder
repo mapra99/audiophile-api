@@ -12,6 +12,8 @@ if product.image.attached?
   end
 end
 
-json.contents product.product_contents do |content|
-  json.partial! 'product_content', product_content: content
+json.contents do
+  product.product_contents.each do |product_content|
+    json.partial! 'product_content', product_content: product_content
+  end
 end
