@@ -16,6 +16,8 @@ json.category do
   json.partial! 'product_category', product_category: product.product_category
 end
 
-json.contents product.product_contents do |content|
-  json.partial! 'product_content', product_content: content
+json.contents do
+  product.product_contents.each do |product_content|
+    json.partial! 'product_content', product_content: product_content
+  end
 end
