@@ -24,7 +24,7 @@ module Admin
       private
 
       def product_content_params
-        params.permit(:product_id, :key, :content)
+        params.permit(:product_id, :key, :content, content: [])
       end
 
       def error_status_code(error)

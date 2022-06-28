@@ -9,9 +9,10 @@ RSpec.describe Admin::V1::ProductContentsController, type: :controller do
       {
         product_id: product.id,
         key: 'main_thumbnail',
-        content: fixture_file_upload('product_image.png', 'image/png')
+        content: content
       }
     end
+    let(:content) { fixture_file_upload('product_image.png', 'image/png') }
     let(:created_content) { create(:attachment_product_content) }
     let(:creator_result) do
       instance_double('Creator Result', success?: true, failure?: false, value!: created_content)
@@ -31,6 +32,19 @@ RSpec.describe Admin::V1::ProductContentsController, type: :controller do
 
     it 'returns a 200 status' do
       expect(response.status).to eq 200
+    end
+
+    describe 'when passing multiple files as content' do
+      let(:content) do
+        [
+          fixture_file_upload('product_image.png', 'image/png'),
+          fixture_file_upload('product_image.png', 'image/png')
+        ]
+      end
+
+      it 'returns a 200 status' do
+        expect(response.status).to eq 200
+      end
     end
 
     describe 'when creator fails due to internal error' do

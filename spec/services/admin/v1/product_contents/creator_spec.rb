@@ -133,5 +133,22 @@ RSpec.describe Admin::V1::ProductContents::Creator do
         expect(result.failure[:code]).to eq(:wrong_params)
       end
     end
+
+    describe 'when uploading multiple files' do
+      let(:content_field) do
+        [
+          fixture_file_upload('product_image.png', 'image/png'),
+          fixture_file_upload('product_image.png', 'image/png')
+        ]
+      end
+
+      before do
+        creator.call
+      end
+
+      it 'attaches all the files to the created content' do
+        expect(creator.product_content.files.count).to eq(2)
+      end
+    end
   end
 end
