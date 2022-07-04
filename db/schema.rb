@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_23_040246) do
+ActiveRecord::Schema.define(version: 2022_07_04_225724) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,8 +75,42 @@ ActiveRecord::Schema.define(version: 2022_05_23_040246) do
     t.index ["slug"], name: "index_products_on_slug", unique: true
   end
 
+  create_table "stock_toppings", force: :cascade do |t|
+    t.bigint "topping_id", null: false
+    t.bigint "stock_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["stock_id"], name: "index_stock_toppings_on_stock_id"
+    t.index ["topping_id", "stock_id"], name: "index_stock_toppings_on_topping_id_and_stock_id", unique: true
+    t.index ["topping_id"], name: "index_stock_toppings_on_topping_id"
+  end
+
+  create_table "stocks", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.integer "quantity", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_stocks_on_product_id"
+  end
+
+  create_table "toppings", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.string "key", null: false
+    t.string "value", null: false
+    t.string "price_change"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key", "value", "product_id"], name: "index_toppings_on_key_and_value_and_product_id", unique: true
+    t.index ["key"], name: "index_toppings_on_key"
+    t.index ["product_id"], name: "index_toppings_on_product_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "product_contents", "products"
   add_foreign_key "products", "product_categories"
+  add_foreign_key "stock_toppings", "stocks"
+  add_foreign_key "stock_toppings", "toppings"
+  add_foreign_key "stocks", "products"
+  add_foreign_key "toppings", "products"
 end
