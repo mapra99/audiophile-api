@@ -5,6 +5,8 @@ class Product < ApplicationRecord
 
   has_one_attached :image
   has_many :product_contents, dependent: :destroy
+  has_many :stocks, dependent: :destroy
+  has_many :toppings, dependent: :destroy
   belongs_to :product_category
 
   validates :name, presence: true, uniqueness: true

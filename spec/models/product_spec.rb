@@ -7,6 +7,8 @@ RSpec.describe Product, type: :model do
     it { is_expected.to have_one_attached(:image) }
     it { is_expected.to have_many(:product_contents) }
     it { is_expected.to belong_to(:product_category) }
+    it { is_expected.to have_many(:stocks) }
+    it { is_expected.to have_many(:toppings) }
   end
 
   describe 'validations' do
