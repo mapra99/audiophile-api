@@ -11,4 +11,8 @@ class Product < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :base_price, presence: true
+
+  def total_quantity
+    stocks.pluck(:quantity).sum
+  end
 end

@@ -1,4 +1,3 @@
-json.id product_category.id
 json.name product_category.name
 json.slug product_category.slug
 json.created_at product_category.created_at
