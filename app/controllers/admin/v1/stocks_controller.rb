@@ -38,8 +38,7 @@ module Admin
 
       def error_message(error)
         product_error_message = PRODUCT_ERROR_MESSAGES[error[:code]]
-        product_error_message += error[:message].join(', ') if error[:code] == :invalid_stock
-        product_error_message += error[:message] if error[:code] == :invalid_toppings
+        product_error_message += error[:message].join(', ') if error[:message].present?
         return product_error_message if product_error_message.present?
 
         super(error)

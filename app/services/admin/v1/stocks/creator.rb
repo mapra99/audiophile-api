@@ -70,7 +70,7 @@ module Admin
           stock.toppings << topping
         rescue ActiveRecord::RecordInvalid => e
           Rails.logger.error(e)
-          raise ServiceError, Failure({ code: :invalid_toppings, message: e.message })
+          raise ServiceError, Failure({ code: :invalid_toppings, message: [e.message] })
         end
       end
     end
