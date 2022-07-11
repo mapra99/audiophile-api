@@ -23,14 +23,14 @@ class ApplicationController < ActionController::API
 
   def error_status_code(error)
     code = GLOBAL_ERROR_CODES[error[:code]]
-    raise StandardError "Error code could not be processed for error #{error}" if code.blank?
+    raise StandardError, "Error code could not be processed for error #{error}" if code.blank?
 
     code
   end
 
   def error_message(error)
     message = error[:message] || GLOBAL_ERROR_MESSAGES[error[:code]]
-    raise StandardError "Error message could not be processed for error #{error}" if message.blank?
+    raise StandardError, "Error message could not be processed for error #{error}" if message.blank?
 
     message
   end
