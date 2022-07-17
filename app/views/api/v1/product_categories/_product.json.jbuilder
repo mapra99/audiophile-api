@@ -1,4 +1,3 @@
-json.id product.id
 json.name product.name
 json.slug product.slug
 json.base_price product.base_price

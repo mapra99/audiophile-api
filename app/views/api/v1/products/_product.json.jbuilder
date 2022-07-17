@@ -1,8 +1,8 @@
-json.id product.id
 json.name product.name
 json.slug product.slug
 json.base_price product.base_price
 json.featured product.featured
+json.total_quantity product.total_quantity
 json.created_at product.created_at
 json.updated_at product.updated_at
 
@@ -19,5 +19,12 @@ end
 json.contents do
   product.product_contents.each do |product_content|
     json.partial! 'product_content', product_content: product_content
+  end
+end
+
+json.toppings do
+  grouped_toppings = product.toppings.grouped_by_key
+  grouped_toppings.each do |key, toppings|
+    json.set! key, toppings.pluck(:value)
   end
 end

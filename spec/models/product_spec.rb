@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Product, type: :model do
-  subject { build(:product) }
+  subject(:product) { build(:product) }
 
   describe 'associations' do
     it { is_expected.to have_one_attached(:image) }
@@ -15,5 +15,18 @@ RSpec.describe Product, type: :model do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_uniqueness_of(:name) }
     it { is_expected.to validate_presence_of(:base_price) }
+  end
+
+  describe '#total_quantity' do
+    before do
+      product.save
+      product.stocks.create(quantity: 10)
+      product.stocks.create(quantity: 15)
+      product.stocks.create(quantity: 0)
+    end
+
+    it 'computes the total quantity based on stocks' do
+      expect(product.total_quantity).to eq(25)
+    end
   end
 end
