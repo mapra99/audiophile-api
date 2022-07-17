@@ -19,7 +19,7 @@ module Admin
           e.failure
         rescue StandardError => e
           Rails.logger.error(e)
-          Failure(:internal_error)
+          Failure({ code: :internal_error })
         end
 
         private

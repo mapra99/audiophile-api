@@ -19,3 +19,7 @@ end
 json.contents product.product_contents do |content|
   json.partial! 'product_content', product_content: content
 end
+
+json.stocks product.stocks do |stock|
+  json.partial! 'stock', stock: stock
+end
