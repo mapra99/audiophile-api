@@ -15,6 +15,14 @@ module Admin
         invalid_toppings: 'Toppings are invalid: '
       }.freeze
 
+      def index
+        collection_builder = Admin::V1::Stocks::CollectionBuilder.new
+        result = collection_builder.call(filters: filter_params)
+        return render_error_from(result) if result.failure?
+
+        @stocks = result.value!
+      end
+
       def create
         creator = Admin::V1::Stocks::Creator.new(params: stock_params)
         result = creator.call
@@ -24,6 +32,10 @@ module Admin
       end
 
       private
+
+      def filter_params
+        params.permit(:product_id)
+      end
 
       def stock_params
         params.permit(:product_id, :quantity, toppings: %i[key value price_change])
