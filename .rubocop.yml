@@ -19,3 +19,6 @@ Style/HashSyntax:
 
 RSpec/MultipleMemoizedHelpers:
   Max: 10
+
+Metrics/MethodLength:
+  Max: 15
