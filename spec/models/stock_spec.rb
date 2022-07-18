@@ -7,6 +7,7 @@ RSpec.describe Stock, type: :model do
     it { is_expected.to belong_to(:product) }
     it { is_expected.to have_many(:stock_toppings) }
     it { is_expected.to have_many(:toppings) }
+    it { is_expected.to have_many(:purchase_cart_items) }
   end
 
   describe 'validations' do
