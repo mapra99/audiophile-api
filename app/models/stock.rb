@@ -4,6 +4,7 @@ class Stock < ApplicationRecord
   belongs_to :product
   has_many :stock_toppings, dependent: :destroy
   has_many :toppings, through: :stock_toppings
+  has_many :purchase_cart_items, dependent: :restrict_with_exception
 
   validates :quantity, presence: true
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_07_10_052431) do
+ActiveRecord::Schema.define(version: 2022_07_18_215902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,37 @@ ActiveRecord::Schema.define(version: 2022_07_10_052431) do
     t.index ["slug"], name: "index_products_on_slug", unique: true
   end
 
+  create_table "purchase_cart_extra_fees", force: :cascade do |t|
+    t.bigint "purchase_cart_id", null: false
+    t.string "key", null: false
+    t.float "price", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["key", "purchase_cart_id"], name: "index_purchase_cart_extra_fees_on_key_and_purchase_cart_id", unique: true
+    t.index ["key"], name: "index_purchase_cart_extra_fees_on_key"
+    t.index ["purchase_cart_id"], name: "index_purchase_cart_extra_fees_on_purchase_cart_id"
+  end
+
+  create_table "purchase_cart_items", force: :cascade do |t|
+    t.bigint "purchase_cart_id", null: false
+    t.bigint "stock_id", null: false
+    t.integer "quantity", null: false
+    t.float "unit_price", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["purchase_cart_id"], name: "index_purchase_cart_items_on_purchase_cart_id"
+    t.index ["stock_id"], name: "index_purchase_cart_items_on_stock_id"
+  end
+
+  create_table "purchase_carts", force: :cascade do |t|
+    t.string "status", null: false
+    t.float "total_price", null: false
+    t.string "uuid", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["uuid"], name: "index_purchase_carts_on_uuid", unique: true
+  end
+
   create_table "stock_toppings", force: :cascade do |t|
     t.bigint "topping_id", null: false
     t.bigint "stock_id", null: false
@@ -111,6 +142,9 @@ ActiveRecord::Schema.define(version: 2022_07_10_052431) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "product_contents", "products"
   add_foreign_key "products", "product_categories"
+  add_foreign_key "purchase_cart_extra_fees", "purchase_carts"
+  add_foreign_key "purchase_cart_items", "purchase_carts"
+  add_foreign_key "purchase_cart_items", "stocks"
   add_foreign_key "stock_toppings", "stocks"
   add_foreign_key "stock_toppings", "toppings"
   add_foreign_key "stocks", "products"
