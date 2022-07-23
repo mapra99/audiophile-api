@@ -154,8 +154,6 @@ RSpec.describe Admin::V1::ProductContents::Creator do
     describe 'when service failes due to unhandled error' do
       before do
         allow(Product).to receive(:find).and_raise(StandardError, 'ERROR MESSAGE')
-
-        creator.call
       end
 
       it 'returns a failure' do

@@ -58,8 +58,6 @@ RSpec.describe Admin::V1::ProductCategories::Creator do
     describe 'when service failes due to unhandled error' do
       before do
         allow(ProductCategory).to receive(:new).and_raise(StandardError, 'ERROR MESSAGE')
-
-        creator.call
       end
 
       it 'returns a failure' do
