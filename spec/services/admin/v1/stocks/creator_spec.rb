@@ -5,10 +5,11 @@ RSpec.describe Admin::V1::Stocks::Creator do
 
   let(:product) { create(:product) }
   let(:product_id) { product.id }
+  let(:quantity) { 5 }
   let(:params) do
     {
       product_id: product_id,
-      quantity: 5,
+      quantity: quantity,
       toppings: [
         {
           key: 'color',
@@ -123,6 +124,48 @@ RSpec.describe Admin::V1::Stocks::Creator do
 
       it 'returns the right error code' do
         expect(result.failure[:code]).to eq(:invalid_toppings)
+      end
+    end
+
+    describe 'when service failes due to unhandled error' do
+      before do
+        allow(Stock).to receive(:new).and_raise(StandardError, 'ERROR MESSAGE')
+      end
+
+      it 'returns a failure' do
+        expect(result.failure?).to eq(true)
+      end
+
+      it 'returns internal_error as failure code' do
+        expect(result.failure[:code]).to eq(:internal_error)
+      end
+    end
+
+    describe 'when stock could not be saved' do
+      # rubocop:disable RSpec/AnyInstance
+      before do
+        allow_any_instance_of(Stock).to receive(:save!).and_raise(ActiveRecord::RecordNotSaved)
+      end
+      # rubocop:enable RSpec/AnyInstance
+
+      it 'returns a failure' do
+        expect(result.failure?).to eq(true)
+      end
+
+      it 'returns the right error code' do
+        expect(result.failure[:code]).to eq(:stock_not_saved)
+      end
+    end
+
+    describe 'when stock does not have quantity present' do
+      let(:quantity) { nil }
+
+      it 'returns a failure' do
+        expect(result.failure?).to eq(true)
+      end
+
+      it 'returns the right error code' do
+        expect(result.failure[:code]).to eq(:invalid_stock)
       end
     end
   end

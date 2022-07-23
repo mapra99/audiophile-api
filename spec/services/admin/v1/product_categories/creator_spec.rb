@@ -68,5 +68,21 @@ RSpec.describe Admin::V1::ProductCategories::Creator do
         expect(result.failure[:code]).to eq(:internal_error)
       end
     end
+
+    describe 'when product category could not be saved' do
+      # rubocop:disable RSpec/AnyInstance
+      before do
+        allow_any_instance_of(ProductCategory).to receive(:save!).and_raise(ActiveRecord::RecordNotSaved)
+      end
+      # rubocop:enable RSpec/AnyInstance
+
+      it 'returns a failure' do
+        expect(result.failure?).to eq(true)
+      end
+
+      it 'returns the right error code' do
+        expect(result.failure[:code]).to eq(:product_category_not_saved)
+      end
+    end
   end
 end
