@@ -1,24 +1,10 @@
-# README
+# Audiophile e-commerce API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the API for Audiophile, an e-commerce site.
+The project is in progress, it's not stable yet. Give it a star and subscribe if you like it so far :) 
 
-Things you may want to cover:
+## API Docs
+https://documenter.getpostman.com/view/10455715/UzQvsjmL
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## ERD
+![]("./docs/../../docs/erd.png)
