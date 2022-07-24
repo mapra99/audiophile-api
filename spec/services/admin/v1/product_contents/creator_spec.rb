@@ -150,5 +150,19 @@ RSpec.describe Admin::V1::ProductContents::Creator do
         expect(creator.product_content.files.count).to eq(2)
       end
     end
+
+    describe 'when service failes due to unhandled error' do
+      before do
+        allow(Product).to receive(:find).and_raise(StandardError, 'ERROR MESSAGE')
+      end
+
+      it 'returns a failure' do
+        expect(result.failure?).to eq(true)
+      end
+
+      it 'returns internal_error as failure code' do
+        expect(result.failure[:code]).to eq(:internal_error)
+      end
+    end
   end
 end
