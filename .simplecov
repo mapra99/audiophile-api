@@ -16,5 +16,6 @@ if ENV['COVERAGE'] == 'true'
 
     add_group 'Services', 'app/services'
     add_group 'Jobs', 'app/jobs'
+    add_group 'Actions', 'app/actions'
   end
 end
