@@ -83,5 +83,35 @@ RSpec.describe Admin::V1::Products::Creator do
         expect(result.failure[:code]).to eq(:category_not_found)
       end
     end
+
+    describe 'when service failes due to unhandled error' do
+      before do
+        allow(Product).to receive(:new).and_raise(StandardError, 'ERROR MESSAGE')
+      end
+
+      it 'returns a failure' do
+        expect(result.failure?).to eq(true)
+      end
+
+      it 'returns internal_error as failure code' do
+        expect(result.failure[:code]).to eq(:internal_error)
+      end
+    end
+
+    describe 'when product could not be saved' do
+      # rubocop:disable RSpec/AnyInstance
+      before do
+        allow_any_instance_of(Product).to receive(:save!).and_raise(ActiveRecord::RecordNotSaved)
+      end
+      # rubocop:enable RSpec/AnyInstance
+
+      it 'returns a failure' do
+        expect(result.failure?).to eq(true)
+      end
+
+      it 'returns the right error code' do
+        expect(result.failure[:code]).to eq(:product_not_saved)
+      end
+    end
   end
 end
