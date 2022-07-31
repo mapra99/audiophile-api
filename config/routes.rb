@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :products, only: %i[index show], param: :slug do
         resources :stocks, only: %i[index], param: :uuid
       end
+      resources :purchase_carts, only: %i[create]
     end
   end
 end

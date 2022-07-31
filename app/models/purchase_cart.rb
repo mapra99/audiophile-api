@@ -16,4 +16,11 @@ class PurchaseCart < ApplicationRecord
 
   has_many :purchase_cart_items, dependent: :destroy
   has_many :purchase_cart_extra_fees, dependent: :destroy
+
+  def update_total_price!
+    items_price = purchase_cart_items.map(&:total_price).sum
+    extra_fees = purchase_cart_extra_fees.pluck(:price).sum
+
+    update!(total_price: items_price + extra_fees)
+  end
 end
