@@ -41,7 +41,7 @@ RSpec.describe PurchaseCart, type: :model do
       cart.update_total_price!
     end
 
-    it "updates the total price given the cart items and extra fees" do
+    it 'updates the total price given the cart items and extra fees' do
       expect(cart.total_price).to eq(131.0)
     end
   end

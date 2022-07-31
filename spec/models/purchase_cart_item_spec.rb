@@ -15,7 +15,7 @@ RSpec.describe PurchaseCartItem, type: :model do
   end
 
   describe '#total_price' do
-    subject(:cart_item) { build(:purchase_cart_item, quantity: 2, unit_price: 15.5)}
+    subject(:cart_item) { build(:purchase_cart_item, quantity: 2, unit_price: 15.5) }
 
     it 'computes the total price given the quantity and unit price' do
       expect(cart_item.total_price).to eq(31.0)
