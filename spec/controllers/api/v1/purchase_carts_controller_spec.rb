@@ -148,4 +148,48 @@ RSpec.describe Api::V1::PurchaseCartsController, type: :controller do
       end
     end
   end
+
+  describe '#show' do
+    let(:cart) { create(:purchase_cart) }
+    let(:finder_result) do
+      instance_double('Finder Result', success?: true, failure?: false, value!: cart)
+    end
+    let(:finder) { instance_double(Api::V1::PurchaseCarts::Finder, call: finder_result) }
+
+    before do
+      allow(Api::V1::PurchaseCarts::Finder).to receive(:new).and_return finder
+
+      request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      get :show, format: :json, params: { uuid: cart.uuid }
+    end
+
+    it 'calls the finder' do
+      expect(finder).to have_received(:call)
+    end
+
+    it 'returns a 200 status' do
+      expect(response.status).to eq 200
+    end
+
+    describe 'when finder fails due to internal error' do
+      let(:finder_result) do
+        instance_double('Finder Result', success?: false, failure?: true, failure: { code: :internal_error })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 500
+      end
+    end
+
+    describe 'when finder fails due to cart not found' do
+      let(:finder_result) do
+        instance_double('Finder Result', success?: false, failure?: true,
+                                         failure: { code: :cart_not_found, message: 'cart not found' })
+      end
+
+      it 'returns a 404 status' do
+        expect(response.status).to eq 404
+      end
+    end
+  end
 end
