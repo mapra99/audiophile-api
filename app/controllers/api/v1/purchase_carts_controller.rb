@@ -26,6 +26,14 @@ module Api
         return render_error_from(result) if result.failure?
       end
 
+      def show
+        finder = Api::V1::PurchaseCarts::Finder.new(cart_uuid: params[:uuid])
+        result = finder.call
+        return render_error_from(result) if result.failure?
+
+        @purchase_cart = result.value!
+      end
+
       private
 
       def purchase_cart_params
