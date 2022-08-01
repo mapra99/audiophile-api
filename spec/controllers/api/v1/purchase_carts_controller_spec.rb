@@ -93,4 +93,59 @@ RSpec.describe Api::V1::PurchaseCartsController, type: :controller do
       end
     end
   end
+
+  describe '#destroy' do
+    let(:cart) { create(:purchase_cart) }
+    let(:destroyer_result) do
+      instance_double('Destroyer Result', success?: true, failure?: false, value!: nil)
+    end
+    let(:destroyer) { instance_double(Api::V1::PurchaseCarts::Destroyer, call: destroyer_result) }
+
+    before do
+      allow(Api::V1::PurchaseCarts::Destroyer).to receive(:new).and_return destroyer
+
+      request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      delete :destroy, format: :json, params: { uuid: cart.uuid }
+    end
+
+    it 'calls the collection creator' do
+      expect(destroyer).to have_received(:call)
+    end
+
+    it 'returns a 204 status' do
+      expect(response.status).to eq 204
+    end
+
+    describe 'when destroyer fails due to internal error' do
+      let(:destroyer_result) do
+        instance_double('Destroyer Result', success?: false, failure?: true, failure: { code: :internal_error })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 500
+      end
+    end
+
+    describe 'when destroyer fails due to cart not found' do
+      let(:destroyer_result) do
+        instance_double('Destroyer Result', success?: false, failure?: true,
+                                            failure: { code: :cart_not_found, message: 'cart not found' })
+      end
+
+      it 'returns a 404 status' do
+        expect(response.status).to eq 404
+      end
+    end
+
+    describe 'when destroyer fails due to invalid status' do
+      let(:destroyer_result) do
+        instance_double('Destroyer Result', success?: false, failure?: true,
+                                            failure: { code: :invalid_status, message: 'Error' })
+      end
+
+      it 'returns a 422 status' do
+        expect(response.status).to eq 422
+      end
+    end
+  end
 end
