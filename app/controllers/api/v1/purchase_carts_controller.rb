@@ -5,7 +5,7 @@ module Api
         stock_not_found: 400,
         insufficient_stock: 422,
         invalid_cart_item: 422,
-        invalid_extra_fee: 500
+        invalid_extra_fee: 422
       }.freeze
 
       PURCHASE_CART_ERROR_MESSAGES = {}.freeze

@@ -89,7 +89,7 @@ RSpec.describe Api::V1::PurchaseCartsController, type: :controller do
       end
 
       it 'returns a 422 status' do
-        expect(response.status).to eq 500
+        expect(response.status).to eq 422
       end
     end
   end
