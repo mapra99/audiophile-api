@@ -21,4 +21,15 @@ RSpec.describe PurchaseCartItem, type: :model do
       expect(cart_item.total_price).to eq(31.0)
     end
   end
+
+  describe 'uuid' do
+    before do
+      cart_item.uuid = nil
+      cart_item.save
+    end
+
+    it 'is generated on creation' do
+      expect(cart_item.uuid).not_to be_nil
+    end
+  end
 end
