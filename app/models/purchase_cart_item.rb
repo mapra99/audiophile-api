@@ -1,4 +1,6 @@
 class PurchaseCartItem < ApplicationRecord
+  include UuidHandler
+
   belongs_to :stock
   belongs_to :purchase_cart
 
