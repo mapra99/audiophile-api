@@ -2,6 +2,8 @@ module Api
   module V1
     class PurchaseCartsController < BaseController
       PURCHASE_CART_ERROR_CODES = {
+        cart_not_found: 404,
+        invalid_status: 422,
         stock_not_found: 400,
         insufficient_stock: 422,
         invalid_cart_item: 422,
@@ -16,6 +18,12 @@ module Api
         return render_error_from(result) if result.failure?
 
         @purchase_cart = result.value!
+      end
+
+      def destroy
+        destroyer = Api::V1::PurchaseCarts::Destroyer.new(cart_uuid: params[:uuid])
+        result = destroyer.call
+        return render_error_from(result) if result.failure?
       end
 
       private
