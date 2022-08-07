@@ -42,13 +42,14 @@ describe Communications::EmailSender do
         }
       )
     end
+    let(:sendgrid_api_response) { instance_double('SendGrid API Response', status_code: '200', body: '') }
 
     # rubocop:disable RSpec/MessageChain
     before do
       allow(SendGrid::Personalization).to receive(:new).and_return(sendgrid_personalization)
       allow(SendGrid::Email).to receive(:new).and_return(sendgrid_email)
       allow(SendGrid::Mail).to receive(:new).and_return(sendgrid_mail)
-      allow(SendGrid::API).to receive_message_chain('new.client.mail._.post').and_return(true)
+      allow(SendGrid::API).to receive_message_chain('new.client.mail._.post').and_return(sendgrid_api_response)
     end
     # rubocop:enable RSpec/MessageChain
 
@@ -86,10 +87,18 @@ describe Communications::EmailSender do
       end
     end
 
-    describe 'when api call fails' do
+    describe 'when api call returns an error status code' do
+      let(:sendgrid_api_response) { instance_double('SendGrid API Response', status_code: '400', body: 'Error') }
+
+      it 'raises an EmailNotSent error' do
+        expect { email_sender.call }.to raise_error(Communications::EmailNotSent)
+      end
+    end
+
+    describe 'when api call fails unexpectedly' do
       # rubocop:disable RSpec/MessageChain
       before do
-        allow(SendGrid::API).to receive_message_chain('new.client.mail._.post').and_raise(StandardError.new("Error"))
+        allow(SendGrid::API).to receive_message_chain('new.client.mail._.post').and_raise(StandardError.new('Error'))
       end
       # rubocop:enable RSpec/MessageChain
 
