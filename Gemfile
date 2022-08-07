@@ -16,6 +16,9 @@ gem 'redis', '~> 4.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Email delivery vendor
+gem 'sendgrid-ruby', '~> 6.6.0'
+
 # Background jobs management
 gem 'sidekiq', '~> 6.5'
 

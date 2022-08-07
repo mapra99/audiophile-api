@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_06_180225) do
+ActiveRecord::Schema.define(version: 2022_08_06_201721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,27 @@ ActiveRecord::Schema.define(version: 2022_08_06_180225) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "communications", force: :cascade do |t|
+    t.string "topic", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "email_communications", force: :cascade do |t|
+    t.string "sender", null: false
+    t.string "recipient", null: false
+    t.string "subject", null: false
+    t.string "template_id", null: false
+    t.json "template_data"
+    t.bigint "communication_id", null: false
+    t.string "target_type"
+    t.bigint "target_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["communication_id"], name: "index_email_communications_on_communication_id"
+    t.index ["target_type", "target_id"], name: "index_email_communications_on_target"
   end
 
   create_table "product_categories", force: :cascade do |t|
@@ -151,6 +172,7 @@ ActiveRecord::Schema.define(version: 2022_08_06_180225) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "email_communications", "communications"
   add_foreign_key "product_contents", "products"
   add_foreign_key "products", "product_categories"
   add_foreign_key "purchase_cart_extra_fees", "purchase_carts"

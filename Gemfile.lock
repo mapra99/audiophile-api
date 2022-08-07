@@ -248,6 +248,9 @@ GEM
     rubocop-rspec (2.11.1)
       rubocop (~> 1.19)
     ruby-progressbar (1.11.0)
+    ruby_http_client (3.5.5)
+    sendgrid-ruby (6.6.2)
+      ruby_http_client (~> 3.4)
     shellany (0.0.1)
     shoulda-matchers (5.1.0)
       activesupport (>= 5.2.0)
@@ -304,6 +307,7 @@ DEPENDENCIES
   rspec-rails
   rubocop-rails
   rubocop-rspec
+  sendgrid-ruby (~> 6.6.0)
   shoulda-matchers (~> 5.0)
   sidekiq (~> 6.5)
   simplecov
