@@ -3,5 +3,5 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :phone, presence: true
 
-  has_many :email_communications, as: :target
+  has_many :email_communications, as: :target, dependent: :destroy
 end

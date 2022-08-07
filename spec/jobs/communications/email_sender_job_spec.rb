@@ -17,7 +17,7 @@ RSpec.describe Communications::EmailSenderJob, type: :job do
       topic: topic,
       sender: sender,
       recipient: recipient,
-      subject: subject,
+      subject: subject_param,
       template_id: template_id,
       template_data: template_data
     )
