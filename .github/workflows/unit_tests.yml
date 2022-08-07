@@ -46,6 +46,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           REDISCLOUD_URL: redis://localhost:6379
+          SENDGRID_API_KEY: 123
           COVERAGE: false
 
       - name: Run RSpec
