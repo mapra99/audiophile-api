@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_06_201721) do
+ActiveRecord::Schema.define(version: 2022_08_07_191044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,17 @@ ActiveRecord::Schema.define(version: 2022_08_06_201721) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  create_table "verification_codes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "code_digest", null: false
+    t.string "status", null: false
+    t.datetime "expires_at", null: false
+    t.string "expiration_job_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_verification_codes_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "email_communications", "communications"
@@ -182,4 +193,5 @@ ActiveRecord::Schema.define(version: 2022_08_06_201721) do
   add_foreign_key "stock_toppings", "toppings"
   add_foreign_key "stocks", "products"
   add_foreign_key "toppings", "products"
+  add_foreign_key "verification_codes", "users"
 end
