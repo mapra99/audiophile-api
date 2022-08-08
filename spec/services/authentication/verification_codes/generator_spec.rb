@@ -38,7 +38,7 @@ RSpec.describe Authentication::VerificationCodes::Generator do
       end
 
       it 'returns an error' do
-        expect{ generator.call }.to raise_error(Authentication::VerificationCodes::InvalidCode)
+        expect { generator.call }.to raise_error(Authentication::VerificationCodes::InvalidCode)
       end
     end
   end
