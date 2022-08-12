@@ -4,7 +4,6 @@ FactoryBot.define do
 
     sender { EmailCommunication::SENDERS.sample }
     recipient { Faker::Internet.email }
-    subject { Faker::Lorem.sentence }
     template_id { SecureRandom.hex }
     template_data do
       {

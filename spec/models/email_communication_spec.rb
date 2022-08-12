@@ -6,7 +6,6 @@ RSpec.describe EmailCommunication, type: :model do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:sender) }
     it { is_expected.to validate_presence_of(:recipient) }
-    it { is_expected.to validate_presence_of(:subject) }
     it { is_expected.to validate_presence_of(:template_id) }
     it { is_expected.to validate_presence_of(:template_data) }
   end

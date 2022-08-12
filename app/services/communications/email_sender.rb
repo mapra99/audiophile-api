@@ -2,11 +2,10 @@ module Communications
   class EmailSender
     attr_reader :communication, :email_communication
 
-    def initialize(topic:, sender:, recipient:, subject:, template_id:, template_data:, target: nil)
+    def initialize(topic:, sender:, recipient:, template_id:, template_data:, target: nil)
       self.topic = topic
       self.sender = sender
       self.recipient = recipient
-      self.subject = subject
       self.template_id = template_id
       self.template_data = template_data
       self.target = target
@@ -27,7 +26,7 @@ module Communications
 
     private
 
-    attr_accessor :topic, :sender, :recipient, :subject, :template_id, :template_data, :personalization, :mail,
+    attr_accessor :topic, :sender, :recipient, :template_id, :template_data, :personalization, :mail,
                   :response, :target
     attr_writer :communication, :email_communication
 
@@ -46,11 +45,8 @@ module Communications
     end
 
     def build_personalization
-      template_data.merge!(subject: subject)
-
       personalization = SendGrid::Personalization.new
       personalization.add_to(SendGrid::Email.new(email: recipient))
-      personalization.subject = subject
       personalization.add_dynamic_template_data(template_data)
 
       self.personalization = personalization
@@ -85,7 +81,6 @@ module Communications
         target: target,
         sender: sender,
         recipient: recipient,
-        subject: subject,
         template_id: template_id,
         template_data: template_data
       )

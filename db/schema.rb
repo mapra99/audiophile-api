@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_07_191044) do
+ActiveRecord::Schema.define(version: 2022_08_12_053938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,6 @@ ActiveRecord::Schema.define(version: 2022_08_07_191044) do
   create_table "email_communications", force: :cascade do |t|
     t.string "sender", null: false
     t.string "recipient", null: false
-    t.string "subject", null: false
     t.string "template_id", null: false
     t.json "template_data"
     t.bigint "communication_id", null: false

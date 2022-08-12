@@ -45,7 +45,6 @@ module Authentication
           topic: Communication::VERIFICATION_CODE_TOPIC,
           sender: EmailCommunication::AUTH_SENDER_EMAIL,
           recipient: user.email,
-          subject: 'Verification Code',
           template_id: VERIFICATION_CODE_EMAIL_TEMPLATE,
           template_data: {
             user_name: user.name,
