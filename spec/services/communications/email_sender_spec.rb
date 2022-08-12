@@ -7,7 +7,6 @@ describe Communications::EmailSender do
       template_data: template_data,
       sender: sender,
       recipient: recipient,
-      subject: subject_param,
       topic: topic
     )
   end
@@ -16,7 +15,6 @@ describe Communications::EmailSender do
   let(:template_data) { { variable: '123' } }
   let(:sender) { EmailCommunication::SENDERS.sample }
   let(:recipient) { Faker::Internet.email }
-  let(:subject_param) { Faker::Lorem.sentence }
   let(:topic) { Communication::TOPICS.sample }
 
   describe '#call' do
@@ -25,7 +23,6 @@ describe Communications::EmailSender do
         SendGrid::Personalization,
         {
           add_to: true,
-          "subject=": true,
           add_dynamic_template_data: true
         }
       )

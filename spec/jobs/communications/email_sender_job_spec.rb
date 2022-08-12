@@ -5,7 +5,6 @@ RSpec.describe Communications::EmailSenderJob, type: :job do
   let(:template_data) { { variable: '123' } }
   let(:sender) { EmailCommunication::SENDERS.sample }
   let(:recipient) { Faker::Internet.email }
-  let(:subject_param) { Faker::Lorem.sentence }
   let(:topic) { Communication::TOPICS.sample }
 
   let(:email_sender) { instance_double(Communications::EmailSender, call: true) }
@@ -17,7 +16,6 @@ RSpec.describe Communications::EmailSenderJob, type: :job do
       topic: topic,
       sender: sender,
       recipient: recipient,
-      subject: subject_param,
       template_id: template_id,
       template_data: template_data
     )
