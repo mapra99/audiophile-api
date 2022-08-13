@@ -5,6 +5,7 @@ RSpec.describe VerificationCode, type: :model do
 
   describe 'associations' do
     it { is_expected.to belong_to(:user) }
+    it { is_expected.to have_one(:access_token) }
   end
 
   describe 'validations' do

@@ -1,6 +1,7 @@
 class VerificationCode < ApplicationRecord
   belongs_to :user
   has_secure_password :code
+  has_one :access_token, dependent: :destroy
 
   validates :expires_at, :status, presence: true
   validates_with Validators::CodeStatusValidator
