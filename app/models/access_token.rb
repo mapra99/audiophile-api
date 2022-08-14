@@ -12,5 +12,5 @@ class AccessToken < ApplicationRecord
     EXPIRED
   ].freeze
 
-  scope :active, -> { where(active: ACTIVE) }
+  scope :active, -> { where(status: ACTIVE) }
 end

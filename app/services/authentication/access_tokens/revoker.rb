@@ -3,7 +3,8 @@ module Authentication
     class Revoker
       attr_reader :access_token
 
-      def initialize(access_token_id:)
+      def initialize(access_token: nil, access_token_id: nil)
+        self.access_token = access_token
         self.access_token_id = access_token_id
       end
 
@@ -18,6 +19,8 @@ module Authentication
       attr_writer :access_token
 
       def find_access_token
+        return if access_token.present?
+
         self.access_token = AccessToken.find(access_token_id)
       end
 
