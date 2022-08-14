@@ -215,4 +215,40 @@ RSpec.describe Api::V1::AuthController, type: :controller do
       end
     end
   end
+
+  describe '#logout' do
+    let(:user) { create(:user) }
+    let(:access_token) { create(:access_token, user: user, status: AccessToken::ACTIVE) }
+
+    let(:logout_result) do
+      instance_double('Logout Result', success?: true, failure?: false, value!: nil)
+    end
+    let(:logout) { instance_double(Api::V1::Auth::Logout, call: logout_result) }
+
+    before do
+      allow(Api::V1::Auth::Logout).to receive(:new).and_return logout
+
+      request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['Authorization'] = "Bearer #{access_token.token}"
+      post :logout, format: :json
+    end
+
+    it 'calls the logout action' do
+      expect(logout).to have_received(:call)
+    end
+
+    it 'returns a 204 status' do
+      expect(response.status).to eq 204
+    end
+
+    describe 'when logout fails due to internal error' do
+      let(:logout_result) do
+        instance_double('Logout Result', success?: false, failure?: true, failure: { code: :internal_error })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 500
+      end
+    end
+  end
 end

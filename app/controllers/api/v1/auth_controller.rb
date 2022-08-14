@@ -1,6 +1,8 @@
 module Api
   module V1
     class AuthController < BaseController
+      skip_before_action :authenticate_user_by_token!, only: %i[signup login confirmation]
+
       AUTH_ERROR_CODES = {
         invalid_user: 422,
         code_not_created: 422,
@@ -29,6 +31,12 @@ module Api
         return render_error_from(result) if result.failure?
 
         @access_token = result.value!
+      end
+
+      def logout
+        logout_action = Api::V1::Auth::Logout.new(user: current_user, access_token: access_token)
+        result = logout_action.call
+        return render_error_from(result) if result.failure?
       end
 
       private

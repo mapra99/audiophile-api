@@ -1,6 +1,8 @@
 module Api
   module V1
     class StocksController < BaseController
+      skip_before_action :authenticate_user_by_token!
+
       STOCK_ERROR_CODES = {
         product_not_found: 400,
         topping_not_found: 400

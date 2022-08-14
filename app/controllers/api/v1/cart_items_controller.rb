@@ -1,6 +1,8 @@
 module Api
   module V1
     class CartItemsController < BaseController
+      skip_before_action :authenticate_user_by_token!
+
       PURCHASE_CART_ITEM_ERROR_CODES = {
         cart_not_found: 404,
         stock_not_found: 400,

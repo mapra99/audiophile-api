@@ -1,11 +1,13 @@
 module Api
   module V1
     class BaseController < Api::BaseController
-      before_action :authenticate_by_token!
+      include TokenAuth
+
+      before_action :validate_api_key!
 
       private
 
-      def authenticate_by_token!
+      def validate_api_key!
         admin_key_header = request.headers['X-AUDIOPHILE-KEY']
         admin_token = ENV.fetch('X_AUDIOPHILE_KEY')
 
