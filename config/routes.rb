@@ -25,6 +25,12 @@ Rails.application.routes.draw do
       resources :purchase_carts, only: %i[create destroy show], param: :uuid do
         resources :cart_items, only: %i[create destroy], param: :uuid
       end
+      namespace :auth do
+        post 'signup'
+        post 'login'
+        post 'confirmation'
+        post 'logout'
+      end
     end
   end
 end
