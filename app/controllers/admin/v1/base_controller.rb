@@ -1,11 +1,11 @@
 module Admin
   module V1
     class BaseController < Admin::BaseController
-      before_action :authenticate_by_token!
+      before_action :validate_api_key!
 
       private
 
-      def authenticate_by_token!
+      def validate_api_key!
         admin_key_header = request.headers['X-ADMIN-KEY']
         admin_token = ENV.fetch('X_ADMIN_KEY')
 

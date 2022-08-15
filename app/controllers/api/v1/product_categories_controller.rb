@@ -1,6 +1,8 @@
 module Api
   module V1
     class ProductCategoriesController < BaseController
+      skip_before_action :authenticate_user_by_token!
+
       def index
         collection_builder = Api::V1::ProductCategories::CollectionBuilder.new
         result = collection_builder.call

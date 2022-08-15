@@ -1,6 +1,8 @@
 module Api
   module V1
     class PurchaseCartsController < BaseController
+      skip_before_action :authenticate_user_by_token!
+
       PURCHASE_CART_ERROR_CODES = {
         cart_not_found: 404,
         invalid_status: 422,
