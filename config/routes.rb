@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         post 'confirmation'
         post 'logout'
       end
+      resources :sessions, only: %i[create], param: :uuid
     end
   end
 end
