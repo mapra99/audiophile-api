@@ -6,7 +6,8 @@ RSpec.describe Purchases::CartItemGenerator do
       stock_uuid: stock_uuid,
       quantity: quantity,
       cart: cart,
-      cart_uuid: cart_uuid
+      cart_uuid: cart_uuid,
+      session: session
     )
   end
 
@@ -16,6 +17,7 @@ RSpec.describe Purchases::CartItemGenerator do
   let(:quantity) { 5 }
   let(:stock_uuid) { stock.uuid }
   let(:cart_uuid) { nil }
+  let(:session) { nil }
 
   describe '#call' do
     describe 'when successful' do
@@ -35,7 +37,8 @@ RSpec.describe Purchases::CartItemGenerator do
     describe 'when passing cart_uuid instead of cart' do
       let(:cart) { nil }
       let(:cart_uuid) { target_cart.uuid }
-      let(:target_cart) { create(:purchase_cart) }
+      let(:target_cart) { create(:purchase_cart, session: session) }
+      let(:session) { create(:session) }
 
       before do
         generator.call

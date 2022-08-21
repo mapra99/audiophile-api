@@ -6,9 +6,10 @@ module Api
 
         attr_reader :cart_item
 
-        def initialize(cart_uuid:, item_params:)
+        def initialize(cart_uuid:, item_params:, session:)
           self.item_params = item_params
           self.cart_uuid = cart_uuid
+          self.session = session
         end
 
         def call
@@ -26,13 +27,14 @@ module Api
         private
 
         attr_writer :cart_item
-        attr_accessor :cart_uuid, :item_params, :cart_item_generator
+        attr_accessor :cart_uuid, :item_params, :cart_item_generator, :session
 
         def set_cart_item_generator
           self.cart_item_generator = Purchases::CartItemGenerator.new(
             cart_uuid: cart_uuid,
             stock_uuid: item_params[:stock_uuid],
-            quantity: item_params[:quantity]
+            quantity: item_params[:quantity],
+            session: session
           )
         end
 

@@ -2,6 +2,7 @@ module Api
   module V1
     class PurchaseCartsController < BaseController
       skip_before_action :authenticate_user_by_token!
+      before_action :authenticate_session_by_header!
 
       PURCHASE_CART_ERROR_CODES = {
         cart_not_found: 404,
@@ -14,8 +15,16 @@ module Api
 
       PURCHASE_CART_ERROR_MESSAGES = {}.freeze
 
+      def index
+        collection_builder = Api::V1::PurchaseCarts::CollectionBuilder.new(session: current_session)
+        result = collection_builder.call
+        return render_error_from(result) if result.failure?
+
+        @purchase_carts = result.value!
+      end
+
       def create
-        creator = Api::V1::PurchaseCarts::Creator.new(params: purchase_cart_params)
+        creator = Api::V1::PurchaseCarts::Creator.new(params: purchase_cart_params, session: current_session)
         result = creator.call
         return render_error_from(result) if result.failure?
 
@@ -23,13 +32,13 @@ module Api
       end
 
       def destroy
-        destroyer = Api::V1::PurchaseCarts::Destroyer.new(cart_uuid: params[:uuid])
+        destroyer = Api::V1::PurchaseCarts::Destroyer.new(cart_uuid: params[:uuid], session: current_session)
         result = destroyer.call
         return render_error_from(result) if result.failure?
       end
 
       def show
-        finder = Api::V1::PurchaseCarts::Finder.new(cart_uuid: params[:uuid])
+        finder = Api::V1::PurchaseCarts::Finder.new(cart_uuid: params[:uuid], session: current_session)
         result = finder.call
         return render_error_from(result) if result.failure?
 

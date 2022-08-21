@@ -4,8 +4,9 @@ module Api
       class Destroyer
         include Dry::Monads[:result]
 
-        def initialize(item_uuid:)
+        def initialize(item_uuid:, session:)
           self.item_uuid = item_uuid
+          self.session = session
         end
 
         def call
@@ -20,10 +21,10 @@ module Api
 
         private
 
-        attr_accessor :item_uuid
+        attr_accessor :item_uuid, :session
 
         def remove_item
-          Purchases::CartItemRemover.new(item_uuid: item_uuid).call
+          Purchases::CartItemRemover.new(item_uuid: item_uuid, session: session).call
         rescue Purchases::CartItemNotFound => e
           raise ServiceError, Failure({ code: :cart_item_not_found, message: e.message })
         end

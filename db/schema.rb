@@ -152,7 +152,7 @@ ActiveRecord::Schema.define(version: 2022_08_21_191920) do
     t.string "uuid", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "session_id"
+    t.bigint "session_id", null: false
     t.index ["session_id"], name: "index_purchase_carts_on_session_id"
     t.index ["uuid"], name: "index_purchase_carts_on_uuid", unique: true
   end
