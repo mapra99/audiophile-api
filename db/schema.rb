@@ -77,19 +77,6 @@ ActiveRecord::Schema.define(version: 2022_08_21_191920) do
     t.index ["target_type", "target_id"], name: "index_email_communications_on_target"
   end
 
-  create_table "locations", force: :cascade do |t|
-    t.string "street_address", null: false
-    t.string "postal_code", null: false
-    t.string "city", null: false
-    t.string "country", null: false
-    t.decimal "longitude"
-    t.decimal "latitude"
-    t.jsonb "raw_geocode"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["longitude", "latitude"], name: "index_locations_on_longitude_and_latitude", unique: true
-  end
-
   create_table "product_categories", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
