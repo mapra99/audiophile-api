@@ -5,13 +5,13 @@ class CreateLocations < ActiveRecord::Migration[6.1]
       t.string :postal_code, null: false
       t.string :city, null: false
       t.string :country, null: false
-      t.string :longitude
-      t.string :latitude
-      t.string :external_id
+      t.decimal :longitude
+      t.decimal :latitude
+      t.jsonb :raw_geocode
 
       t.timestamps
     end
 
-    add_index :locations, :external_id, unique: true
+    add_index :locations, %i[longitude latitude], unique: true
   end
 end
