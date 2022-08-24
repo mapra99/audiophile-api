@@ -2,11 +2,12 @@ module Purchases
   class CartItemGenerator
     attr_reader :cart_item
 
-    def initialize(stock_uuid:, quantity:, cart: nil, cart_uuid: nil)
+    def initialize(stock_uuid:, quantity:, session: nil, cart: nil, cart_uuid: nil)
       self.cart = cart
       self.cart_uuid = cart_uuid
       self.stock_uuid = stock_uuid
       self.quantity = quantity
+      self.session = session
     end
 
     def call
@@ -19,11 +20,11 @@ module Purchases
 
     private
 
-    attr_accessor :cart_uuid, :stock_uuid, :quantity, :stock, :cart
+    attr_accessor :cart_uuid, :stock_uuid, :quantity, :stock, :cart, :session
     attr_writer :cart_item
 
     def find_cart
-      self.cart = PurchaseCart.find_by(uuid: cart_uuid)
+      self.cart = session.purchase_carts.find_by(uuid: cart_uuid)
       raise CartNotFound, cart_uuid if cart.blank?
     end
 

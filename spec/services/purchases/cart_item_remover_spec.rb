@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Purchases::CartItemRemover do
-  subject(:remover) { described_class.new(item_uuid: item_uuid) }
+  subject(:remover) { described_class.new(item_uuid: item_uuid, session: session) }
 
-  let(:cart) { create(:purchase_cart) }
+  let(:session) { create(:session) }
+  let(:cart) { create(:purchase_cart, session: session) }
   let(:cart_item) { create(:purchase_cart_item, purchase_cart: cart) }
   let(:item_uuid) { cart_item.uuid }
 
@@ -22,7 +23,7 @@ RSpec.describe Purchases::CartItemRemover do
       end
     end
 
-    describe 'when cart ite is not found' do
+    describe 'when cart item is not found' do
       before do
         allow(PurchaseCartItem).to receive(:find_by).and_return(nil)
       end

@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::PurchaseCarts::Creator do
-  subject(:creator) { described_class.new(params: params) }
+  subject(:creator) { described_class.new(params: params, session: session) }
 
+  let(:session) { create(:session) }
   let(:params) do
     {
       items: [
@@ -26,29 +27,29 @@ RSpec.describe Api::V1::PurchaseCarts::Creator do
     before do
       allow(Purchases::CartItemGenerator).to receive(:new).and_return(cart_item_generator)
       allow(Purchases::ExtraFeesGenerator).to receive(:new).and_return(extra_fees_generator)
-
-      creator.call
     end
 
     it 'succeeds' do
       expect(result.success?).to eq(true)
     end
 
-    it 'creates a new product' do
+    it 'creates a new cart' do
       expect { creator.call }.to change(PurchaseCart, :count).by(1)
     end
 
     it 'calls the item generator service once per item' do
+      creator.call
       expect(cart_item_generator).to have_received(:call).exactly(2)
     end
 
     it 'calls the extra fees generator service' do
+      creator.call
       expect(extra_fees_generator).to have_received(:call).exactly(1)
     end
 
     describe 'when service failes due to unhandled error' do
       before do
-        allow(PurchaseCart).to receive(:create).and_raise(StandardError, 'ERROR MESSAGE')
+        allow(Purchases::CartItemGenerator).to receive(:new).and_raise(StandardError, 'ERROR MESSAGE')
       end
 
       it 'returns a failure' do

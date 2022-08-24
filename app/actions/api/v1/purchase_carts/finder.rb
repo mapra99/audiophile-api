@@ -6,12 +6,13 @@ module Api
 
         attr_reader :cart
 
-        def initialize(cart_uuid:)
+        def initialize(cart_uuid:, session:)
           self.cart_uuid = cart_uuid
+          self.session = session
         end
 
         def call
-          result = PurchaseCart.find_by!(uuid: cart_uuid)
+          result = session.purchase_carts.find_by!(uuid: cart_uuid)
 
           self.cart = result
           Success(result)
@@ -22,7 +23,7 @@ module Api
 
         private
 
-        attr_accessor :cart_uuid
+        attr_accessor :cart_uuid, :session
         attr_writer :cart
       end
     end

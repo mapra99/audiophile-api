@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Purchases::CartCanceler do
-  subject(:canceler) { described_class.new(cart_uuid: cart_uuid) }
+  subject(:canceler) { described_class.new(cart_uuid: cart_uuid, session: session) }
 
-  let(:cart) { create(:purchase_cart, status: cart_status) }
+  let(:session) { create(:session) }
+  let(:cart) { create(:purchase_cart, status: cart_status, session: session) }
   let(:cart_uuid) { cart.uuid }
   let(:cart_status) { PurchaseCart::STARTED }
 

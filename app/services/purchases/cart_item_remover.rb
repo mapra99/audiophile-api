@@ -1,7 +1,8 @@
 module Purchases
   class CartItemRemover
-    def initialize(item_uuid:)
+    def initialize(item_uuid:, session:)
       self.item_uuid = item_uuid
+      self.session = session
     end
 
     def call
@@ -13,7 +14,7 @@ module Purchases
 
     private
 
-    attr_accessor :item_uuid, :item, :cart
+    attr_accessor :item_uuid, :item, :cart, :session
 
     def find_item
       self.item = PurchaseCartItem.find_by(uuid: item_uuid)
@@ -22,6 +23,7 @@ module Purchases
 
     def find_cart
       self.cart = item.purchase_cart
+      raise CartNotFound, cart.uuid if cart.session != session
     end
 
     def delete_item

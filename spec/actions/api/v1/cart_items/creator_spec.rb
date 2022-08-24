@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::CartItems::Creator do
-  subject(:creator) { described_class.new(cart_uuid: cart_uuid, item_params: params) }
+  subject(:creator) { described_class.new(cart_uuid: cart_uuid, item_params: params, session: session) }
 
-  let(:cart_uuid) { create(:purchase_cart).uuid }
+  let(:session) { create(:session) }
+  let(:cart_uuid) { create(:purchase_cart, session: session).uuid }
   let(:params) do
     {
       stock_uuid: '123abc',

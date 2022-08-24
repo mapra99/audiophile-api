@@ -6,8 +6,9 @@ module Api
 
         attr_reader :params, :purchase_cart
 
-        def initialize(params:)
+        def initialize(params:, session:)
           self.params = params
+          self.session = session
         end
 
         def call
@@ -28,9 +29,10 @@ module Api
         private
 
         attr_writer :params, :purchase_cart
+        attr_accessor :session
 
         def create_cart
-          self.purchase_cart = PurchaseCart.create(
+          self.purchase_cart = session.purchase_carts.create(
             status: PurchaseCart::STARTED,
             total_price: 0
           )

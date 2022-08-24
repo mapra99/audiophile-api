@@ -1,9 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::PurchaseCarts::Destroyer do
-  subject(:destroyer) { described_class.new(cart_uuid: cart_uuid) }
+  subject(:destroyer) { described_class.new(cart_uuid: cart_uuid, session: session) }
 
-  let(:cart) { create(:purchase_cart) }
+  let(:session) { create(:session) }
+  let(:cart) { create(:purchase_cart, session: session) }
   let(:cart_uuid) { cart.uuid }
 
   describe '#call' do

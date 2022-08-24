@@ -2,6 +2,7 @@ module Api
   module V1
     class CartItemsController < BaseController
       skip_before_action :authenticate_user_by_token!
+      before_action :authenticate_session_by_header!
 
       PURCHASE_CART_ITEM_ERROR_CODES = {
         cart_not_found: 404,
@@ -16,7 +17,8 @@ module Api
       def create
         creator = Api::V1::CartItems::Creator.new(
           cart_uuid: params[:purchase_cart_uuid],
-          item_params: purchase_cart_item_params
+          item_params: purchase_cart_item_params,
+          session: current_session
         )
         result = creator.call
         return render_error_from(result) if result.failure?
@@ -25,7 +27,7 @@ module Api
       end
 
       def destroy
-        destroyer = Api::V1::CartItems::Destroyer.new(item_uuid: params[:uuid])
+        destroyer = Api::V1::CartItems::Destroyer.new(item_uuid: params[:uuid], session: current_session)
         result = destroyer.call
         return render_error_from(result) if result.failure?
       end

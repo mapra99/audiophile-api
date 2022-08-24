@@ -4,6 +4,7 @@ RSpec.describe Api::V1::CartItemsController, type: :controller do
   render_views
 
   describe '#create' do
+    let(:session) { create(:session) }
     let(:payload) do
       {
         purchase_cart_uuid: cart.uuid,
@@ -11,7 +12,7 @@ RSpec.describe Api::V1::CartItemsController, type: :controller do
         quantity: 1
       }
     end
-    let(:cart) { create(:purchase_cart) }
+    let(:cart) { create(:purchase_cart, session: session) }
     let(:created_item) { create(:purchase_cart_item) }
     let(:creator_result) do
       instance_double('Creator Result', success?: true, failure?: false, value!: created_item)
@@ -22,6 +23,7 @@ RSpec.describe Api::V1::CartItemsController, type: :controller do
       allow(Api::V1::CartItems::Creator).to receive(:new).and_return creator
 
       request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['X-SESSION-ID'] = session.uuid
       post :create, format: :json, params: payload
     end
 
@@ -89,7 +91,8 @@ RSpec.describe Api::V1::CartItemsController, type: :controller do
   end
 
   describe '#destroy' do
-    let(:cart) { create(:purchase_cart) }
+    let(:session) { create(:session) }
+    let(:cart) { create(:purchase_cart, session: session) }
     let(:cart_item) { create(:purchase_cart_item, purchase_cart: cart) }
     let(:destroyer_result) do
       instance_double('Destroyer Result', success?: true, failure?: false, value!: nil)
@@ -100,6 +103,7 @@ RSpec.describe Api::V1::CartItemsController, type: :controller do
       allow(Api::V1::CartItems::Destroyer).to receive(:new).and_return destroyer
 
       request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['X-SESSION-ID'] = session.uuid
       delete :destroy, format: :json, params: { uuid: cart_item.uuid, purchase_cart_uuid: cart.uuid }
     end
 

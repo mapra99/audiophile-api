@@ -4,8 +4,9 @@ module Api
       class Destroyer
         include Dry::Monads[:result]
 
-        def initialize(cart_uuid:)
+        def initialize(cart_uuid:, session:)
           self.cart_uuid = cart_uuid
+          self.session = session
         end
 
         def call
@@ -20,10 +21,10 @@ module Api
 
         private
 
-        attr_accessor :cart_uuid
+        attr_accessor :cart_uuid, :session
 
         def cancel_cart
-          Purchases::CartCanceler.new(cart_uuid: cart_uuid).call
+          Purchases::CartCanceler.new(cart_uuid: cart_uuid, session: session).call
         rescue Purchases::CartNotFound => e
           raise ServiceError, Failure({ code: :cart_not_found, message: e.message })
         rescue Purchases::InvalidStatusForCancelation => e

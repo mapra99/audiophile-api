@@ -6,12 +6,26 @@ RSpec.describe PurchaseCart, type: :model do
   describe 'associations' do
     it { is_expected.to have_many(:purchase_cart_items) }
     it { is_expected.to have_many(:purchase_cart_extra_fees) }
+    it { is_expected.to belong_to(:session) }
   end
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:total_price) }
     it { is_expected.to validate_presence_of(:status) }
     it { is_expected.to validate_inclusion_of(:status).in_array(PurchaseCart::STATUS_TYPES) }
+
+    describe 'when there is already an existing started cart associated to a session' do
+      let(:session) { create(:session) }
+      let(:purchase_cart) { build(:purchase_cart, session: session, status: PurchaseCart::STARTED) }
+
+      before do
+        create(:purchase_cart, session: session, status: PurchaseCart::STARTED)
+      end
+
+      it 'is not valid' do
+        expect(purchase_cart.valid?).to eq false
+      end
+    end
   end
 
   describe 'uuid' do

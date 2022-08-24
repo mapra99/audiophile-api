@@ -13,9 +13,13 @@ class PurchaseCart < ApplicationRecord
 
   validates :total_price, presence: true
   validates :status, presence: true, inclusion: { in: STATUS_TYPES }
+  validates_with Validators::PurchaseCartStatusValidator
 
   has_many :purchase_cart_items, dependent: :destroy
   has_many :purchase_cart_extra_fees, dependent: :destroy
+  belongs_to :session
+
+  scope :started, -> { where(status: STARTED) }
 
   def update_total_price!
     items_price = purchase_cart_items.map(&:total_price).sum
