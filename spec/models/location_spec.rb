@@ -9,10 +9,14 @@ RSpec.describe Location, type: :model do
   end
 
   describe 'validations' do
-    it { VCR.use_cassette('geocoder_response') { is_expected.to validate_presence_of(:street_address) } }
-    it { VCR.use_cassette('geocoder_response') { is_expected.to validate_presence_of(:city) } }
-    it { VCR.use_cassette('geocoder_response') { is_expected.to validate_presence_of(:country) } }
-    it { VCR.use_cassette('geocoder_response') { is_expected.to validate_presence_of(:postal_code) } }
+    it { use_geocoder_cassette { is_expected.to validate_presence_of(:street_address) } }
+    it { use_geocoder_cassette { is_expected.to validate_presence_of(:city) } }
+    it { use_geocoder_cassette { is_expected.to validate_presence_of(:country) } }
+    it { use_geocoder_cassette { is_expected.to validate_presence_of(:postal_code) } }
+
+    def use_geocoder_cassette(&block)
+      VCR.use_cassette('geocoder_response', match_requests_on: %i[method host path], &block)
+    end
   end
 
   describe '#full_address' do

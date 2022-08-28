@@ -9,7 +9,7 @@ FactoryBot.define do
       street_address { 'Cra 7 # 24-89' }
       city { 'Bogota' }
       country { 'Colombia' }
-      postal_code { 110_010 }
+      postal_code { '110010' }
     end
   end
 end
