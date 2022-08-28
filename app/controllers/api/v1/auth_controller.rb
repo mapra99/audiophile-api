@@ -2,6 +2,7 @@ module Api
   module V1
     class AuthController < BaseController
       skip_before_action :authenticate_user_by_token!, only: %i[signup login confirmation]
+      before_action :authenticate_session_by_header!
 
       AUTH_ERROR_CODES = {
         invalid_user: 422,
@@ -26,7 +27,10 @@ module Api
       end
 
       def confirmation
-        confirmation_action = Api::V1::Auth::Confirmation.new(params: confirmation_params)
+        confirmation_action = Api::V1::Auth::Confirmation.new(
+          params: confirmation_params,
+          session: current_session
+        )
         result = confirmation_action.call
         return render_error_from(result) if result.failure?
 

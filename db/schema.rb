@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_21_191920) do
+ActiveRecord::Schema.define(version: 2022_08_28_013349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,8 @@ ActiveRecord::Schema.define(version: 2022_08_21_191920) do
     t.string "ip_address", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_sessions_on_user_id"
     t.index ["uuid"], name: "index_sessions_on_uuid", unique: true
   end
 
@@ -240,6 +242,7 @@ ActiveRecord::Schema.define(version: 2022_08_21_191920) do
   add_foreign_key "purchase_cart_items", "purchase_carts"
   add_foreign_key "purchase_cart_items", "stocks"
   add_foreign_key "purchase_carts", "sessions"
+  add_foreign_key "sessions", "users"
   add_foreign_key "stock_toppings", "stocks"
   add_foreign_key "stock_toppings", "toppings"
   add_foreign_key "stocks", "products"

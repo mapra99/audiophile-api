@@ -21,5 +21,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:access_tokens) }
     it { is_expected.to have_many(:user_locations) }
     it { is_expected.to have_many(:locations) }
+    it { is_expected.to have_many(:sessions) }
+    it { is_expected.to have_many(:purchase_carts) }
   end
 end

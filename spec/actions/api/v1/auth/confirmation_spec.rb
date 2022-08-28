@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::Auth::Confirmation do
-  subject(:action) { described_class.new(params: { email: user_email, code: code }) }
+  subject(:action) { described_class.new(params: { email: user_email, code: code }, session: session) }
 
   let(:user) { create(:user) }
   let(:user_email) { user.email }
@@ -10,6 +10,7 @@ RSpec.describe Api::V1::Auth::Confirmation do
   let(:verification_code) { create(:verification_code, user: user, code: code) }
 
   let(:access_token) { create(:access_token, user: user, verification_code: verification_code) }
+  let(:session) { create(:session, user: nil) }
 
   describe '#call' do
     subject(:result) { action.call }
@@ -31,9 +32,14 @@ RSpec.describe Api::V1::Auth::Confirmation do
       expect(result.success?).to eq(true)
     end
 
-    it 'calls the code generator' do
+    it 'calls the code checker' do
       action.call
       expect(code_checker).to have_received(:call)
+    end
+
+    it 'updates the session with the user' do
+      action.call
+      expect(session.user).to eq(user)
     end
 
     describe 'when service fails due to unhandled error' do
