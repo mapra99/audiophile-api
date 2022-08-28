@@ -16,11 +16,13 @@ RSpec.describe Api::V1::AuthController, type: :controller do
       instance_double('Signup Result', success?: true, failure?: false, value!: nil)
     end
     let(:signup) { instance_double(Api::V1::Auth::Signup, call: signup_result) }
+    let(:session) { create(:session) }
 
     before do
       allow(Api::V1::Auth::Signup).to receive(:new).and_return signup
 
       request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['X-SESSION-ID'] = session.uuid
       post :signup, format: :json, params: payload
     end
 
@@ -77,11 +79,13 @@ RSpec.describe Api::V1::AuthController, type: :controller do
       instance_double('Login Result', success?: true, failure?: false, value!: nil)
     end
     let(:login) { instance_double(Api::V1::Auth::Login, call: login_result) }
+    let(:session) { create(:session, user: user) }
 
     before do
       allow(Api::V1::Auth::Login).to receive(:new).and_return login
 
       request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['X-SESSION-ID'] = session.uuid
       post :login, format: :json, params: payload
     end
 
@@ -145,11 +149,13 @@ RSpec.describe Api::V1::AuthController, type: :controller do
       instance_double('Confirmation Result', success?: true, failure?: false, value!: access_token)
     end
     let(:confirmation) { instance_double(Api::V1::Auth::Confirmation, call: confirmation_result) }
+    let(:session) { create(:session, user: user) }
 
     before do
       allow(Api::V1::Auth::Confirmation).to receive(:new).and_return confirmation
 
       request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['X-SESSION-ID'] = session.uuid
       post :confirmation, format: :json, params: payload
     end
 
@@ -224,12 +230,14 @@ RSpec.describe Api::V1::AuthController, type: :controller do
       instance_double('Logout Result', success?: true, failure?: false, value!: nil)
     end
     let(:logout) { instance_double(Api::V1::Auth::Logout, call: logout_result) }
+    let(:session) { create(:session, user: user) }
 
     before do
       allow(Api::V1::Auth::Logout).to receive(:new).and_return logout
 
       request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
       request.headers['Authorization'] = "Bearer #{access_token.token}"
+      request.headers['X-SESSION-ID'] = session.uuid
       post :logout, format: :json
     end
 

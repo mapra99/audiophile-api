@@ -6,14 +6,16 @@ module Api
 
         attr_reader :access_token
 
-        def initialize(params:)
+        def initialize(params:, session:)
           self.params = params
+          self.session = session
         end
 
         def call
           find_user
           check_code
           create_token
+          update_session
 
           Success(access_token)
         rescue ServiceError => e
@@ -25,7 +27,7 @@ module Api
 
         private
 
-        attr_accessor :params, :user, :verification_code
+        attr_accessor :params, :user, :verification_code, :session
         attr_writer :access_token
 
         def find_user
@@ -56,6 +58,10 @@ module Api
           self.access_token = token_generator.access_token
         rescue Authentication::AccessTokens::InvalidToken => e
           raise ServiceError, Failure({ code: :invalid_token, message: e.message })
+        end
+
+        def update_session
+          session.update!(user: user)
         end
       end
     end
