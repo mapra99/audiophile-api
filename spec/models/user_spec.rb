@@ -23,5 +23,6 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:locations) }
     it { is_expected.to have_many(:sessions) }
     it { is_expected.to have_many(:purchase_carts) }
+    it { is_expected.to have_many(:payments) }
   end
 end

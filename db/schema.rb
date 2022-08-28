@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_28_013349) do
+ActiveRecord::Schema.define(version: 2022_08_28_055739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,6 +88,19 @@ ActiveRecord::Schema.define(version: 2022_08_28_013349) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["longitude", "latitude"], name: "index_locations_on_longitude_and_latitude", unique: true
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.string "uuid", null: false
+    t.string "status", null: false
+    t.float "amount", null: false
+    t.string "provider_id", null: false
+    t.bigint "purchase_cart_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["purchase_cart_id"], name: "index_payments_on_purchase_cart_id"
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "product_categories", force: :cascade do |t|
@@ -236,6 +249,8 @@ ActiveRecord::Schema.define(version: 2022_08_28_013349) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "email_communications", "communications"
+  add_foreign_key "payments", "purchase_carts"
+  add_foreign_key "payments", "users"
   add_foreign_key "product_contents", "products"
   add_foreign_key "products", "product_categories"
   add_foreign_key "purchase_cart_extra_fees", "purchase_carts"

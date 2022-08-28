@@ -11,4 +11,5 @@ class User < ApplicationRecord
   has_many :locations, through: :user_locations
   has_many :sessions, dependent: :destroy
   has_many :purchase_carts, through: :sessions
+  has_many :payments, dependent: :destroy
 end
