@@ -19,5 +19,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:email_communications) }
     it { is_expected.to have_many(:verification_codes) }
     it { is_expected.to have_many(:access_tokens) }
+    it { is_expected.to have_many(:user_locations) }
+    it { is_expected.to have_many(:locations) }
   end
 end

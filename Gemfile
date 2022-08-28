@@ -34,12 +34,19 @@ gem 'bootsnap', '>= 1.4.4', require: false
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 # gem 'rack-cors'
 
+# AWS Services SDKs
+# Location
+gem 'aws-sdk-locationservice'
+# S3
 gem 'aws-sdk-s3'
 
 # Generate easily slugs for models https://github.com/norman/friendly_id
 gem 'friendly_id'
 
 gem 'net-smtp'
+
+# Geocode addresses and IPs
+gem 'geocoder', '~> 1.8.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -53,6 +60,10 @@ group :development, :test do
   gem 'rubocop-rspec'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'simplecov'
+
+  # Record HTTP requests made on specs
+  gem 'vcr'
+  gem 'webmock'
 end
 
 group :development do
