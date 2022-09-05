@@ -58,7 +58,7 @@ RSpec.describe Api::V1::Payments::Creator do
 
     describe 'when payment could not be created' do
       before do
-        allow(Payments::StartPayment).to receive(:new).and_raise(Payments::InvalidPayment.new(["ERROR"]))
+        allow(Payments::StartPayment).to receive(:new).and_raise(Payments::InvalidPayment.new(['ERROR']))
       end
 
       it 'fails' do
@@ -72,7 +72,7 @@ RSpec.describe Api::V1::Payments::Creator do
 
     describe 'when payment provider threw an error' do
       before do
-        allow(Payments::StartPayment).to receive(:new).and_raise(Payments::ProviderError.new("ERROR"))
+        allow(Payments::StartPayment).to receive(:new).and_raise(Payments::ProviderError.new('ERROR'))
       end
 
       it 'fails' do

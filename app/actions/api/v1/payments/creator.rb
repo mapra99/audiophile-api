@@ -49,9 +49,9 @@ module Api
           self.payment = payment_starter.payment
           self.payment_intent = payment_starter.payment_intent
         rescue ::Payments::InvalidPayment => e
-          raise ServiceError, Failure({ code: :invalid_payment, message: e.message})
+          raise ServiceError, Failure({ code: :invalid_payment, message: e.message })
         rescue ::Payments::ProviderError => e
-          raise ServiceError, Failure({ code: :provider_error, message: e.message})
+          raise ServiceError, Failure({ code: :provider_error, message: e.message })
         end
       end
     end
