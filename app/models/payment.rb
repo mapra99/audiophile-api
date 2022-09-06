@@ -3,6 +3,7 @@ class Payment < ApplicationRecord
 
   belongs_to :user
   belongs_to :purchase_cart
+  has_many :orders, dependent: :nullify
 
   validates :status, :amount, :provider_id, presence: true
 
