@@ -12,5 +12,5 @@ class Order < ApplicationRecord
     ACTIVE,
     ON_DELIVERY,
     DELIVERED
-  ]
+  ].freeze
 end
