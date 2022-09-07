@@ -29,7 +29,7 @@ Follow the printed instructions
 
 4. Restart your terminal, and install ruby 
 ```
-rbenv install 3.0.0
+rbenv install 3.0.4
 ```
 
 5. Install postgresql
