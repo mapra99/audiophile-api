@@ -26,7 +26,7 @@ jobs:
 
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0.0
+          ruby-version: 3.0.4
 
       - name: Install dependent libraries
         run: sudo apt-get install libpq-dev
