@@ -6,6 +6,14 @@ module Api
       }.freeze
       LOCATION_ERROR_MESSAGES = {}.freeze
 
+      def index
+        collection_builder = Api::V1::Locations::CollectionBuilder.new(user: current_user)
+        result = collection_builder.call
+        return render_error_from(result) if result.failure?
+
+        @user_locations = result.value!
+      end
+
       def create
         creator = Api::V1::Locations::Creator.new(
           params: location_params,
