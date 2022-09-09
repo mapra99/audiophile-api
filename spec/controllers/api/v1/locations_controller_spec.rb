@@ -3,6 +3,47 @@ require 'rails_helper'
 RSpec.describe Api::V1::LocationsController, type: :controller do
   render_views
 
+  describe '#index' do
+    let(:location) { create(:colpatria_tower_co) }
+    let(:user) { create(:user) }
+    let(:user_location) { create(:user_location, location: location, user: user) }
+
+    let(:collection_result) do
+      instance_double('Collection Result', success?: true, failure?: false, value!: [user_location])
+    end
+    let(:collection_builder) { instance_double(Api::V1::Locations::CollectionBuilder, call: collection_result) }
+
+    let(:access_token) { create(:access_token, user: user, status: AccessToken::ACTIVE) }
+
+    before do
+      VCR.use_cassette('geocoder_response') do
+        allow(Api::V1::Locations::CollectionBuilder).to receive(:new).and_return collection_builder
+      end
+
+      request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['Authorization'] = "Bearer #{access_token.token}"
+      get :index, format: :json
+    end
+
+    it 'calls the locations collection builder' do
+      expect(collection_builder).to have_received(:call)
+    end
+
+    it 'returns a 200 status' do
+      expect(response.status).to eq 200
+    end
+
+    describe 'when collection builder fails due to internal error' do
+      let(:collection_result) do
+        instance_double('Collection Result', success?: false, failure?: true, failure: { code: :internal_error })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 500
+      end
+    end
+  end
+
   describe '#create' do
     let(:location) { create(:colpatria_tower_co) }
     let(:user) { create(:user) }

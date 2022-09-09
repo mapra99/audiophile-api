@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.0'
+ruby '3.0.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.1.6'
@@ -50,6 +50,9 @@ gem 'geocoder', '~> 1.8.0'
 
 # Awesomely print console output
 gem 'awesome_print', '~> 1.9.2'
+
+# Stipe payments API wrapper
+gem 'stripe', '~> 7.1.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -284,6 +284,7 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
+    stripe (7.1.0)
     thor (1.2.1)
     timeout (0.3.0)
     tzinfo (2.0.4)
@@ -333,12 +334,13 @@ DEPENDENCIES
   sidekiq (~> 6.5)
   simplecov
   spring
+  stripe (~> 7.1.0)
   tzinfo-data
   vcr
   webmock
 
 RUBY VERSION
-   ruby 3.0.0p0
+   ruby 3.0.4p208
 
 BUNDLED WITH
    2.3.3

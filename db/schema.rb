@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 2022_09_06_034157) do
     t.index ["payment_id"], name: "index_orders_on_payment_id"
     t.index ["user_location_id"], name: "index_orders_on_user_location_id"
   end
-
+  
   create_table "payment_events", force: :cascade do |t|
     t.bigint "payment_id", null: false
     t.jsonb "raw_data", null: false

@@ -7,6 +7,7 @@ RSpec.describe Payment, type: :model do
     it { is_expected.to belong_to(:user) }
     it { is_expected.to belong_to(:purchase_cart) }
     it { is_expected.to have_many(:orders).dependent(:nullify) }
+    it { is_expected.to have_many(:payment_events).dependent(:destroy) }
   end
 
   describe 'validations' do

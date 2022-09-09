@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   draw(:sidekiq)
   draw(:admin)
   draw(:api)
+  draw(:webhooks)
 end
