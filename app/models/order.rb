@@ -7,10 +7,12 @@ class Order < ApplicationRecord
   ACTIVE = 'active'.freeze
   ON_DELIVERY = 'on_delivery'.freeze
   DELIVERED = 'delivered'.freeze
+  CANCELLED = 'cancelled'.freeze
 
   STATUS_TYPES = [
     ACTIVE,
     ON_DELIVERY,
-    DELIVERED
+    DELIVERED,
+    CANCELLED
   ].freeze
 end
