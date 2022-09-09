@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_06_010917) do
+ActiveRecord::Schema.define(version: 2022_09_06_034157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,16 @@ ActiveRecord::Schema.define(version: 2022_09_06_010917) do
     t.index ["longitude", "latitude"], name: "index_locations_on_longitude_and_latitude", unique: true
   end
 
+  create_table "orders", force: :cascade do |t|
+    t.bigint "payment_id", null: false
+    t.bigint "user_location_id", null: false
+    t.string "status", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["payment_id"], name: "index_orders_on_payment_id"
+    t.index ["user_location_id"], name: "index_orders_on_user_location_id"
+  end
+  
   create_table "payment_events", force: :cascade do |t|
     t.bigint "payment_id", null: false
     t.jsonb "raw_data", null: false
@@ -258,6 +268,8 @@ ActiveRecord::Schema.define(version: 2022_09_06_010917) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "email_communications", "communications"
+  add_foreign_key "orders", "payments"
+  add_foreign_key "orders", "user_locations"
   add_foreign_key "payment_events", "payments"
   add_foreign_key "payments", "purchase_carts"
   add_foreign_key "payments", "users"
