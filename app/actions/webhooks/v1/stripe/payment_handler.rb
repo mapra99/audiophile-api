@@ -51,8 +51,9 @@ module Webhooks
           end
         end
 
-        # TODO: work on this logic later
-        def success_dispatch; end
+        def success_dispatch
+          ::Payments::SuccessDispatch.new(payment: payment).call
+        end
 
         # TODO: work on this logic later
         def failure_dispatch; end
