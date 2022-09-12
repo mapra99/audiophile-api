@@ -44,7 +44,7 @@ RSpec.describe Api::V1::Payments::CollectionBuilder do
 
     describe 'when cart is not found' do
       let(:cart) { create(:purchase_cart, user: user) }
-      let(:cart_uuid) { "123abc" }
+      let(:cart_uuid) { '123abc' }
 
       before do
         create_list(:payment, 5, user: user)
