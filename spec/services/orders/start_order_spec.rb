@@ -9,13 +9,13 @@ RSpec.describe Orders::StartOrder do
   end
   let(:payment) { create(:payment, purchase_cart: purchase_cart0) }
 
-  describe '#call' do
-    subject(:result) { starter.call }
+  # describe '#call' do
+  #   subject(:result) { starter.call }
 
-    before do
-      allow_any_instance_of(PurchaseCartItem).to receive(:reduce_stock_amount!)
-    end
+  #   before do
+  #     allow_any_instance_of(PurchaseCartItem).to receive(:reduce_stock_amount!)
+  #   end
 
-    it ""
-  end
+  #   it ''
+  # end
 end
