@@ -91,4 +91,58 @@ RSpec.describe Api::V1::PaymentsController, type: :controller do
       end
     end
   end
+
+  describe '#index' do
+    let(:user) { create(:user) }
+    let(:payments) { create_list(:payment, 2, user: user) }
+
+    let(:collection_result) do
+      instance_double('Collection Builder Result', success?: true, failure?: false, value!: payments)
+    end
+    let(:collection_builder) do
+      instance_double(
+        Api::V1::Payments::CollectionBuilder,
+        call: collection_result
+      )
+    end
+
+    let(:access_token) { create(:access_token, user: user, status: AccessToken::ACTIVE) }
+
+    before do
+      allow(Api::V1::Payments::CollectionBuilder).to receive(:new).and_return collection_builder
+
+      request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['Authorization'] = "Bearer #{access_token.token}"
+      get :index, format: :json
+    end
+
+    it 'calls the payments collection_builder' do
+      expect(collection_builder).to have_received(:call)
+    end
+
+    it 'returns a 200 status' do
+      expect(response.status).to eq 200
+    end
+
+    describe 'when builder fails due to internal error' do
+      let(:collection_result) do
+        instance_double('Builder Result', success?: false, failure?: true, failure: { code: :internal_error })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 500
+      end
+    end
+
+    describe 'when builder fails due to purchase cart not found' do
+      let(:collection_result) do
+        instance_double('Creator Result', success?: false, failure?: true,
+                                          failure: { code: :purchase_cart_not_found, message: 'Error' })
+      end
+
+      it 'returns a 400 status' do
+        expect(response.status).to eq 400
+      end
+    end
+  end
 end
