@@ -16,6 +16,6 @@ namespace :api do
     end
     resources :sessions, only: %i[create], param: :uuid
     resources :locations, only: %i[create index]
-    resources :payments, only: %i[create]
+    resources :payments, only: %i[create index]
   end
 end

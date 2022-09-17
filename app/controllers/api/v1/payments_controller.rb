@@ -21,6 +21,18 @@ module Api
         @payment = creator.payment
       end
 
+      def index
+        collection_builder = Api::V1::Payments::CollectionBuilder.new(
+          purchase_cart_uuid: params[:purchase_cart_uuid],
+          user: current_user
+        )
+
+        result = collection_builder.call
+        return render_error_from(result) if result.failure?
+
+        @payments = result.value!
+      end
+
       private
 
       def error_status_code(error)
