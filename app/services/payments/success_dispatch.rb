@@ -5,7 +5,7 @@ module Payments
     end
 
     def call
-      ActiveRecord::Base.Transaction do
+      ActiveRecord::Base.transaction do
         update_payment_status
         update_cart_status
         start_order

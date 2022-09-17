@@ -7,7 +7,7 @@ module Orders
     end
 
     def call
-      ActiveRecord::Base.Transaction do
+      ActiveRecord::Base.transaction do
         create_order
         reduce_stocks_amounts
       end
