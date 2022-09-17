@@ -19,6 +19,7 @@ class PurchaseCart < ApplicationRecord
   has_many :purchase_cart_extra_fees, dependent: :destroy
   has_many :payments, dependent: :destroy
   belongs_to :session
+  belongs_to :user_location, optional: true
   has_one :user, through: :session
 
   scope :started, -> { where(status: STARTED) }

@@ -6,6 +6,7 @@ RSpec.describe Order, type: :model do
   describe 'associations' do
     it { is_expected.to belong_to(:payment) }
     it { is_expected.to belong_to(:user_location) }
+    it { is_expected.to have_one(:purchase_cart).through(:payment) }
   end
 
   describe 'validations' do

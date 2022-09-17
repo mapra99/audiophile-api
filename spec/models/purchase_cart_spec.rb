@@ -7,6 +7,7 @@ RSpec.describe PurchaseCart, type: :model do
     it { is_expected.to have_many(:purchase_cart_items) }
     it { is_expected.to have_many(:purchase_cart_extra_fees) }
     it { is_expected.to belong_to(:session) }
+    it { is_expected.to belong_to(:user_location).optional }
     it { is_expected.to have_many(:payments) }
     it { is_expected.to have_one(:user).through(:session) }
   end

@@ -32,4 +32,17 @@ RSpec.describe PurchaseCartItem, type: :model do
       expect(cart_item.uuid).not_to be_nil
     end
   end
+
+  describe '#reduce_stock_amount!' do
+    let(:stock) { create(:stock, quantity: 10) }
+    let(:cart_item) { create(:purchase_cart_item, stock: stock, quantity: 3) }
+
+    before do
+      cart_item.reduce_stock_amount!
+    end
+
+    it 'reduces the stock amount to 7' do
+      expect(stock.quantity).to eq(7)
+    end
+  end
 end

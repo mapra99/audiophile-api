@@ -11,4 +11,9 @@ class PurchaseCartItem < ApplicationRecord
   def total_price
     (unit_price * quantity).to_f
   end
+
+  def reduce_stock_amount!
+    new_amount = stock.quantity - quantity
+    stock.update!(quantity: new_amount)
+  end
 end

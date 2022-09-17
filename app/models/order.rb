@@ -1,6 +1,7 @@
 class Order < ApplicationRecord
   belongs_to :payment
   belongs_to :user_location
+  has_one :purchase_cart, through: :payment
 
   validates :status, presence: true
 
