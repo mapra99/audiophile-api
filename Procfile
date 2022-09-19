@@ -1,1 +1,1 @@
-web: bundle exec puma -C /opt/elasticbeanstalk/config/private/pumaconf.rb config.ru
+web: RACK_ENV=production RAILS_ENV=production bundle exec puma -C config/puma.rb config.ru
