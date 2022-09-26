@@ -2,7 +2,7 @@
 FROM ruby:3.0.4-alpine
 
 # install rails dependencies
-RUN apk add --update --no-cache build-base postgresql-dev git
+RUN apk add --update --no-cache build-base postgresql-dev postgresql-client git
 
 # create a folder /app in the docker container and go into that folder
 RUN mkdir /app
