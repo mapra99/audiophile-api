@@ -6,6 +6,20 @@ services:
       - ../../../tmp/db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgres
+  redis:
+    image: redis
+    volumes:
+      - ../../../tmp/redis:/var/lib/redis/data
+  sidekiq:
+    build: ../../
+    command: 'bundle exec sidekiq'
+    volumes:
+      - ../../:/app
+    environment:
+      RAILS_ENV: "development"
+      REDIS_URL: "redis://redis:6379"
+    depends_on:
+      - redis
   web:
     build: ../../
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
@@ -15,3 +29,4 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - redis
