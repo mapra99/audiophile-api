@@ -12,6 +12,9 @@ WORKDIR /app
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
 
+# Install bundler
+RUN gem install bundler:2.3.3
+
 # Run bundle install to install gems inside the gemfile
 RUN bundle install
 
