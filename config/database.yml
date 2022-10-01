@@ -85,6 +85,15 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+staging:
+  adapter: postgresql
+  encoding: unicode
+  host: <%= ENV['POSTGRESQL_HOST'] %>
+  username: <%= ENV['POSTGRESQL_USER_NAME'] %>
+  password: <%= ENV['POSTGRESQL_PASSWORD'] %>
+  pool: 5
+  database: <%= ENV['POSTGRESQL_DB'] %>
+
 production:
   <<: *default
   database: <%= ENV['DATABASE_NAME'] %>
