@@ -34,7 +34,7 @@ Geocoder.configure(
     }
   },
   cache: Redis.new(
-    url: ENV.fetch('REDIS_URL', 'redis://localhost:6379'),
+    url: ENV.fetch('REDIS_URL', 'redis://redis:6379'),
     username: ENV.fetch('REDIS_USERNAME', nil),
     password: ENV.fetch('REDIS_PASSWORD', nil)
   ),
