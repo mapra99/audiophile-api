@@ -23,6 +23,9 @@ default: &default
 
 development:
   <<: *default
+  host: db
+  username: <%= ENV.fetch('POSTGRESQL_USER_NAME', 'postgres') %>
+  password: <%= ENV.fetch('POSTGRESQL_PASSWORD', 'postgres') %>
   database: audiophile_development
 
   # The specified database role being used to connect to postgres.
@@ -57,6 +60,9 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
+  host: db
+  username: <%= ENV.fetch('POSTGRESQL_USER_NAME', 'postgres') %>
+  password: <%= ENV.fetch('POSTGRESQL_PASSWORD', 'postgres') %>
   database: audiophile_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
@@ -79,8 +85,16 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+staging:
+  <<: *default
+  host: <%= ENV['POSTGRESQL_HOST'] %>
+  username: <%= ENV['POSTGRESQL_USER_NAME'] %>
+  password: <%= ENV['POSTGRESQL_PASSWORD'] %>
+  database: <%= ENV['POSTGRESQL_DB'] %>
+
 production:
   <<: *default
-  database: audiophile_production
-  username: audiophile
-  password: <%= ENV['AUDIOPHILE_DATABASE_PASSWORD'] %>
+  host: <%= ENV['POSTGRESQL_HOST'] %>
+  username: <%= ENV['POSTGRESQL_USER_NAME'] %>
+  password: <%= ENV['POSTGRESQL_PASSWORD'] %>
+  database: <%= ENV['POSTGRESQL_DB'] %>

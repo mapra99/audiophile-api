@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   draw(:admin)
   draw(:api)
   draw(:webhooks)
+
+  resource :health, only: [:show], controller: :health
 end

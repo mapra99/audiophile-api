@@ -11,6 +11,38 @@ You can find [the API documentation here](https://documenter.getpostman.com/view
 
 ## Installation Instructions
 
+### Setup with Docker (recommended)
+
+1. Install Docker Engine and docker-compose
+2. Create a `tmp/` folder 1 level above the root directory of the project
+  ```bash
+    mkdir ../tmp
+  ```
+3. Run docker-compose in development mode
+  ```bash
+  cd docker/development
+  docker-compose up --build
+  ```
+4. Open a new terminal and setup the database
+  ```bash
+  docker-compose run web rails db:setup
+  ```
+
+#### Quickstart
+Once everything is installed, this is the every day process to start up the environment:
+
+1. Run docker-compose in development mode
+  ```bash
+  cd docker/development
+  docker-compose up --build
+  ```
+2. Open a new terminal and run any possible migrations
+  ```bash
+  docker-compose run web rails db:migrate
+  ```
+
+### Traditional Setup
+
 1. Install homebrew https://brew.sh/index_es
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -71,7 +103,7 @@ brew services start redis
 rails server
 ```
 
-### Optional: Background Jobs
+#### Optional: Background Jobs
 1. Run sidekiq on a separate terminal
 ```
 bundle exec sidekiq
@@ -79,7 +111,7 @@ bundle exec sidekiq
 
 2. Go to http://localhost:3000/eng/sidekiq to monitor the jobs
 
-## Quickstart
+#### Quickstart
 
 Once everything is installed, this is the every day process to start up the environment:
 

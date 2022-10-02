@@ -39,7 +39,7 @@ module Communications
     end
 
     def resolve_recipient
-      return if Rails.env.production?
+      return if Rails.env.production? || Rails.env.staging?
 
       self.recipient = ENV.fetch('TEST_EMAILS_RECIPIENT', 'test@example.com')
     end
