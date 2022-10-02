@@ -32,3 +32,10 @@ Metrics/ParameterLists:
 Metrics/BlockLength:
   Exclude:
     - 'config/routes.rb'
+
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - staging
+    - test
+    - development
