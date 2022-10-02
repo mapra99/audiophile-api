@@ -1,0 +1,22 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - ../../../tmp/test/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+  redis:
+    image: redis
+    volumes:
+      - ../../../tmp/test/redis:/var/lib/redis/data
+  rspec:
+    build: ../../
+    command: bundle exec guard
+    environment:
+      RAILS_ENV: test
+    volumes:
+      - ../../:/app
+    depends_on:
+      - db
+      - redis

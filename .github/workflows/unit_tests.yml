@@ -53,6 +53,7 @@ jobs:
         run: bundle exec rspec  --require rails_helper
         env:
           RAILS_ENV: test
+          REDIS_URL: redis://localhost:6379
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           COVERAGE: true
