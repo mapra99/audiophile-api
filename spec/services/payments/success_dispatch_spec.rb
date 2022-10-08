@@ -6,11 +6,13 @@ RSpec.describe Payments::SuccessDispatch do
   let(:payment) { create(:payment, purchase_cart: purchase_cart) }
   let(:purchase_cart) { create(:purchase_cart) }
 
-  let(:order_starter) { instance_double(Orders::StartOrder, call: true) }
+  let(:order_starter) { instance_double(Orders::StartOrder, call: true, order: anything) }
+  let(:success_email_sender) { instance_double(Payments::SuccessEmailSender, call: true) }
 
   describe '#call' do
     before do
       allow(Orders::StartOrder).to receive(:new).and_return(order_starter)
+      allow(Payments::SuccessEmailSender).to receive(:new).and_return(success_email_sender)
 
       dispatch.call
     end
@@ -25,6 +27,10 @@ RSpec.describe Payments::SuccessDispatch do
 
     it 'calls the order starter' do
       expect(order_starter).to have_received(:call)
+    end
+
+    it 'calls the success email sender' do
+      expect(success_email_sender).to have_received(:call)
     end
   end
 end

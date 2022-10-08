@@ -9,6 +9,7 @@ module Payments
         update_payment_status
         update_cart_status
         start_order
+        send_success_email
       end
     end
 
@@ -25,7 +26,15 @@ module Payments
     end
 
     def start_order
-      Orders::StartOrder.new(payment: payment).call
+      order_starter.call
+    end
+
+    def order_starter
+      @order_starter ||= Orders::StartOrder.new(payment: payment)
+    end
+
+    def send_success_email
+      Payments::SuccessEmailSender.new(payment: payment, order: order_starter.order).call
     end
   end
 end

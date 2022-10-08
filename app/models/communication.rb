@@ -6,7 +6,10 @@ class Communication < ApplicationRecord
   validates :topic, presence: true
 
   VERIFICATION_CODE_TOPIC = 'verification_code'
+  SUCCESS_PAYMENT_TOPIC = 'success_payment'
+
   TOPICS = [
-    VERIFICATION_CODE_TOPIC
+    VERIFICATION_CODE_TOPIC,
+    SUCCESS_PAYMENT_TOPIC
   ].freeze
 end
