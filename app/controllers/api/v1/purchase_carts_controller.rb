@@ -45,10 +45,22 @@ module Api
         @purchase_cart = result.value!
       end
 
+      def update
+        updater = Api::V1::PurchaseCarts::Updater.new(params: purchase_cart_update_params, session: current_session)
+        result = updater.call
+        return render_error_from(result) if result.failure?
+
+        @purchase_cart = result.value!
+      end
+
       private
 
       def purchase_cart_params
         params.permit(items: %i[quantity stock_uuid])
+      end
+
+      def purchase_cart_update_params
+        params.permit(:uuid, :user_location_uuid)
       end
 
       def error_status_code(error)

@@ -233,4 +233,65 @@ RSpec.describe Api::V1::PurchaseCartsController, type: :controller do
       end
     end
   end
+
+  describe '#update' do
+    describe 'when patching the user location' do
+      let(:session) { create(:session) }
+      let(:user_location) do
+        VCR.use_cassette('geocoder_response', match_requests_on: %i[method host path]) do
+          create(:user_location)
+        end
+      end
+      let(:payload) do
+        {
+          user_location_uuid: user_location.uuid,
+          uuid: purchase_cart.uuid
+        }
+      end
+
+      let(:purchase_cart) { create(:purchase_cart) }
+
+      let(:updater_result) do
+        instance_double('Updater Result', success?: true, failure?: false, value!: purchase_cart)
+      end
+      let(:updater) { instance_double(Api::V1::PurchaseCarts::Updater, call: updater_result) }
+
+      before do
+        allow(Api::V1::PurchaseCarts::Updater).to receive(:new).and_return updater
+
+        request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+        request.headers['X-SESSION-ID'] = session.uuid
+        patch :update, format: :json, params: payload
+      end
+
+      it 'calls the updater' do
+        expect(updater).to have_received(:call)
+      end
+
+      it 'returns a 200 status' do
+        expect(response.status).to eq 200
+      end
+
+      describe 'when updater fails due to internal error' do
+        let(:updater_result) do
+          instance_double('Updater Result', success?: false, failure?: true, failure: { code: :internal_error })
+        end
+
+        it 'returns a 500 status' do
+          expect(response.status).to eq 500
+        end
+      end
+
+      describe 'when updater fails due to cart not found' do
+        let(:updater_result) do
+          instance_double('Updater Result', success?: false, failure?: true,
+                                            failure: { code: :cart_not_found, message: 'cart not found' })
+        end
+
+        it 'returns a 404 status' do
+          expect(response.status).to eq 404
+        end
+      end
+    end
+  end
 end

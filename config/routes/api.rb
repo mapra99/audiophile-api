@@ -5,7 +5,7 @@ namespace :api do
     resources :products, only: %i[index show], param: :slug do
       resources :stocks, only: %i[index], param: :uuid
     end
-    resources :purchase_carts, only: %i[index create destroy show], param: :uuid do
+    resources :purchase_carts, only: %i[index create destroy show update], param: :uuid do
       resources :cart_items, only: %i[create destroy], param: :uuid
     end
     namespace :auth do
