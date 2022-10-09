@@ -23,7 +23,7 @@ default: &default
 
 development:
   <<: *default
-  host: db
+  host: <%= ENV.fetch('POSTGRESQL_HOST', 'db') %>
   username: <%= ENV.fetch('POSTGRESQL_USER_NAME', 'postgres') %>
   password: <%= ENV.fetch('POSTGRESQL_PASSWORD', 'postgres') %>
   database: audiophile_development
@@ -60,7 +60,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  host: db
+  host: <%= ENV.fetch('POSTGRESQL_HOST', 'db') %>
   username: <%= ENV.fetch('POSTGRESQL_USER_NAME', 'postgres') %>
   password: <%= ENV.fetch('POSTGRESQL_PASSWORD', 'postgres') %>
   database: audiophile_test
