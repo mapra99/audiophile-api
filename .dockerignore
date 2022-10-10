@@ -10,8 +10,6 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
-!/log/.keep
-!/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
@@ -28,3 +26,6 @@
 **/.DS_Store
 **/coverage/*
 **/.env
+
+./docs/*
+./spec/*
