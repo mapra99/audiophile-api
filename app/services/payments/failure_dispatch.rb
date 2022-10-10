@@ -7,6 +7,7 @@ module Payments
     def call
       ActiveRecord::Base.transaction do
         update_payment_status
+        send_failure_email
       end
     end
 
@@ -16,6 +17,10 @@ module Payments
 
     def update_payment_status
       payment.update!(status: Payment::CANCELED)
+    end
+
+    def send_failure_email
+      Payments::FailureEmailSender.new(payment: payment).call
     end
   end
 end
