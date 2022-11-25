@@ -16,7 +16,7 @@ FactoryBot.define do
           :product_content,
           product: product,
           key: 'box_content',
-          value: '[{"quantity": "1x", "content": "Headphone Unit"},{"quantity": "2x", "content": "Replacement Earcups"}]'
+          value: '[{"quantity": "1x", "content": "Headphone"},{"quantity": "2x", "content": "Replacement Earcups"}]'
         )
         create(:attachment_product_content, product: product, key: 'preview_images')
         create(:attachment_product_content, product: product, key: 'featured_image')
