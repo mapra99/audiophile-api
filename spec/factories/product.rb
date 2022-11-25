@@ -7,6 +7,20 @@ FactoryBot.define do
 
     factory :featured_product do
       featured { true }
+
+      after :create do |product|
+        create(:text_product_content, product: product, key: 'featured_description')
+        create(:text_product_content, product: product, key: 'description')
+        create(:text_product_content, product: product, key: 'features')
+        create(
+          :product_content,
+          product: product,
+          key: 'box_content',
+          value: '[{"quantity": "1x", "content": "Headphone"},{"quantity": "2x", "content": "Replacement Earcups"}]'
+        )
+        create(:attachment_product_content, product: product, key: 'preview_images')
+        create(:attachment_product_content, product: product, key: 'featured_image')
+      end
     end
   end
 end
