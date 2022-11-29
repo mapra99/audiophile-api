@@ -6,9 +6,7 @@ module Api
 
         def call(filters: {})
           self.result = Product.all
-          filter_by_category(filters[:category_ids]) if filters[:category_ids].present?
-          filter_by_featured(filters[:featured]) if filters[:featured].present?
-          filter_by_content(filters[:content]) if filters[:content].present?
+          apply_filters(filters)
 
           Success(result)
         rescue StandardError => e
@@ -20,6 +18,12 @@ module Api
         private
 
         attr_accessor :result
+
+        def apply_filters(filters)
+          filter_by_category(filters[:category_ids]) if filters[:category_ids].present?
+          filter_by_featured(filters[:featured]) if filters[:featured].present?
+          filter_by_content(filters[:content]) if filters[:content].present?
+        end
 
         def filter_by_category(category_ids)
           category_ids_arr = category_ids.split(',')
