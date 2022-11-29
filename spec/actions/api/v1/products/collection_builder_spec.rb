@@ -56,6 +56,24 @@ RSpec.describe Api::V1::Products::CollectionBuilder do
         expect(result.value!.count).to eq 5
       end
     end
+
+    describe 'contents filter' do
+      let(:result) { subject.call(filters: { content: { foo: 'bar' } }) }
+
+      before do
+        create_list(:product, 2)
+        product = create(:product)
+        create(:product_content, product: product, key: 'foo', value: 'bar')
+      end
+
+      it 'succeeds' do
+        expect(result.success?).to eq true
+      end
+
+      it 'returns the only product with the given content' do
+        expect(result.value!.count).to eq(1)
+      end
+    end
   end
 
   describe 'when an error is raised' do

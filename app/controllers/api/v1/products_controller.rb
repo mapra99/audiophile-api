@@ -22,7 +22,7 @@ module Api
       private
 
       def filter_params
-        params.permit(:featured, :categories)
+        params.permit(:featured, :categories, content: {})
       end
     end
   end
