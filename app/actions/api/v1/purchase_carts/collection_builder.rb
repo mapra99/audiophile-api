@@ -27,7 +27,7 @@ module Api
 
         def filter_by_status
           return result if filters[:status].blank?
-  
+
           result.where(status: filters[:status])
         end
       end
