@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-require 'factory_bot'
-require 'faker'
+if Rails.env.test?
+  require 'factory_bot'
+  require 'faker'
+end
 
 namespace :seeds do
   desc 'Seeds the DB with enough data for E2E tests'
