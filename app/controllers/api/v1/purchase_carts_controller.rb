@@ -16,7 +16,10 @@ module Api
       PURCHASE_CART_ERROR_MESSAGES = {}.freeze
 
       def index
-        collection_builder = Api::V1::PurchaseCarts::CollectionBuilder.new(session: current_session)
+        collection_builder = Api::V1::PurchaseCarts::CollectionBuilder.new(
+          session: current_session,
+          filters: filter_params
+        )
         result = collection_builder.call
         return render_error_from(result) if result.failure?
 
@@ -61,6 +64,10 @@ module Api
 
       def purchase_cart_update_params
         params.permit(:uuid, :user_location_uuid)
+      end
+
+      def filter_params
+        params.permit(:status)
       end
 
       def error_status_code(error)

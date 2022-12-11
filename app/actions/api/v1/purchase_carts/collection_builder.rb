@@ -4,12 +4,14 @@ module Api
       class CollectionBuilder
         include Dry::Monads[:result]
 
-        def initialize(session:)
+        def initialize(session:, filters: {})
           self.session = session
+          self.filters = filters
         end
 
         def call
           self.result = session.purchase_carts
+          self.result = filter_by_status
 
           Success(result)
         rescue ServiceError => e
@@ -21,7 +23,13 @@ module Api
 
         private
 
-        attr_accessor :result, :session
+        attr_accessor :result, :session, :filters
+
+        def filter_by_status
+          return result if filters[:status].blank?
+  
+          result.where(status: filters[:status])
+        end
       end
     end
   end
