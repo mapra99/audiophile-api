@@ -74,6 +74,24 @@ RSpec.describe Api::V1::Products::CollectionBuilder do
         expect(result.value!.count).to eq(1)
       end
     end
+
+    describe 'stock available filter' do
+      let(:result) { subject.call(filters: { stock_available: 'true' }) }
+
+      before do
+        create_list(:product, 2)
+        product = create(:product)
+        create(:stock, product: product, quantity: 1)
+      end
+
+      it 'succeeds' do
+        expect(result.success?).to eq true
+      end
+
+      it 'returns the only product with stocks available' do
+        expect(result.value!.count).to eq(1)
+      end
+    end
   end
 
   describe 'when an error is raised' do

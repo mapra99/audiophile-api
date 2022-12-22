@@ -47,4 +47,17 @@ RSpec.describe Stock, type: :model do
       expect(result).to eq(500.0)
     end
   end
+
+  describe '.available' do
+    subject(:result) { described_class.available }
+
+    before do
+      create(:stock, quantity: 10)
+      create(:stock, quantity: 0)
+    end
+
+    it 'returns only the stocks with existing quantity' do
+      expect(result.count).to eq(1)
+    end
+  end
 end
