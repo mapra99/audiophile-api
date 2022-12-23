@@ -54,7 +54,6 @@ RSpec.describe Admin::V1::Products::Updater do
     describe 'when product is not found' do
       let(:product_id) { 1313 }
 
-
       it 'returns a failure' do
         expect(result.failure?).to eq(true)
       end
