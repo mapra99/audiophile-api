@@ -6,6 +6,7 @@ RSpec.describe Session, type: :model do
   describe 'associations' do
     it { is_expected.to have_many(:purchase_carts) }
     it { is_expected.to belong_to(:user).optional }
+    it { is_expected.to have_many(:page_views).dependent(:destroy) }
   end
 
   describe 'validations' do
