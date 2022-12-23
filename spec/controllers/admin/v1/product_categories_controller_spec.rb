@@ -118,4 +118,66 @@ RSpec.describe Admin::V1::ProductCategoriesController, type: :controller do
       end
     end
   end
+
+  describe '#update' do
+    let(:payload) do
+      {
+        id: product_category.id,
+        name: 'Headphonez',
+        image: fixture_file_upload('product_image.png', 'image/png')
+      }
+    end
+    let(:product_category) { create(:product_category) }
+    let(:updater_result) do
+      instance_double('Creator Result', success?: true, failure?: false, value!: product_category)
+    end
+    let(:updater) { instance_double(Admin::V1::ProductCategories::Updater, call: updater_result) }
+
+    before do
+      allow(Admin::V1::ProductCategories::Updater).to receive(:new).and_return updater
+
+      request.headers['X-ADMIN-KEY'] = 'admin'
+      put :update, format: :json, params: payload
+    end
+
+    it 'calls the updater' do
+      expect(updater).to have_received(:call)
+    end
+
+    it 'returns a 200 status' do
+      expect(response.status).to eq 200
+    end
+
+    describe 'when updater fails due to internal error' do
+      let(:updater_result) do
+        instance_double('Updater Result', success?: false, failure?: true, failure: { code: :internal_error })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 500
+      end
+    end
+
+    describe 'when updater fails due to category not found' do
+      let(:updater_result) do
+        instance_double('Updater Result', success?: false, failure?: true,
+                                          failure: { code: :category_not_found })
+      end
+
+      it 'returns a 400 status' do
+        expect(response.status).to eq 400
+      end
+    end
+
+    describe 'when not authenticated' do
+      before do
+        request.headers['X-ADMIN-KEY'] = nil
+        put :update, format: :json, params: payload
+      end
+
+      it 'returns a 401 error' do
+        expect(response.status).to eq 401
+      end
+    end
+  end
 end
