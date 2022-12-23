@@ -156,7 +156,8 @@ RSpec.describe Admin::V1::ProductContentsController, type: :controller do
 
     describe 'when updater fails due to product content not found' do
       let(:updater_result) do
-        instance_double('Updater Result', success?: false, failure?: true, failure: { code: :product_content_not_found })
+        instance_double('Updater Result', success?: false, failure?: true,
+                                          failure: { code: :product_content_not_found })
       end
 
       it 'returns a 400 status' do
