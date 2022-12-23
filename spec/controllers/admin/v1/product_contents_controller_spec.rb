@@ -99,4 +99,79 @@ RSpec.describe Admin::V1::ProductContentsController, type: :controller do
       end
     end
   end
+
+  describe '#update' do
+    let(:product) { create(:product) }
+    let(:payload) do
+      {
+        product_id: product.id,
+        key: 'main_thumbnail',
+        content: content
+      }
+    end
+    let(:content) { fixture_file_upload('product_image.png', 'image/png') }
+    let(:updated_content) { create(:attachment_product_content) }
+    let(:updater_result) do
+      instance_double('Creator Result', success?: true, failure?: false, value!: updated_content)
+    end
+    let(:updater) { instance_double(Admin::V1::ProductContents::Updater, call: updater_result) }
+
+    before do
+      allow(Admin::V1::ProductContents::Updater).to receive(:new).and_return updater
+
+      request.headers['X-ADMIN-KEY'] = 'admin'
+      put :update, format: :json, params: payload
+    end
+
+    it 'calls the updater' do
+      expect(updater).to have_received(:call)
+    end
+
+    it 'returns a 200 status' do
+      expect(response.status).to eq 200
+    end
+
+    describe 'when passing multiple files as content' do
+      let(:content) do
+        [
+          fixture_file_upload('product_image.png', 'image/png'),
+          fixture_file_upload('product_image.png', 'image/png')
+        ]
+      end
+
+      it 'returns a 200 status' do
+        expect(response.status).to eq 200
+      end
+    end
+
+    describe 'when updater fails due to internal error' do
+      let(:updater_result) do
+        instance_double('Updater Result', success?: false, failure?: true, failure: { code: :internal_error })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 500
+      end
+    end
+
+    describe 'when updater fails due to product content not found' do
+      let(:updater_result) do
+        instance_double('Updater Result', success?: false, failure?: true, failure: { code: :product_content_not_found })
+      end
+
+      it 'returns a 400 status' do
+        expect(response.status).to eq 400
+      end
+    end
+
+    describe 'when updater fails due to wrong params' do
+      let(:updater_result) do
+        instance_double('Updater Result', success?: false, failure?: true, failure: { code: :wrong_params })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 400
+      end
+    end
+  end
 end
