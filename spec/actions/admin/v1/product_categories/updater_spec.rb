@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Admin::V1::ProductCategories::Updater do
-  subject(:updater) { described_class.new(category_id: category_id,params: params) }
+  subject(:updater) { described_class.new(category_id: category_id, params: params) }
 
   let(:product_category) { create(:product_category) }
   let(:category_id) { product_category.id }
