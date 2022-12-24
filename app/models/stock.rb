@@ -8,6 +8,8 @@ class Stock < ApplicationRecord
 
   validates :quantity, presence: true
 
+  scope :available, -> { where('quantity > 0') }
+
   def self.filter_exactly_by_toppings(toppings)
     includes(:toppings).select do |stock|
       stock.toppings.pluck(:id).sort == toppings.pluck(:id).sort

@@ -12,6 +12,8 @@ class Product < ApplicationRecord
   validates :name, presence: true, uniqueness: true
   validates :base_price, presence: true
 
+  scope :with_available_stocks, -> { where(id: Stock.available.pluck(:product_id)) }
+
   def total_quantity
     stocks.pluck(:quantity).sum
   end

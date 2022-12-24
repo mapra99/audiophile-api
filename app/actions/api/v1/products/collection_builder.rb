@@ -23,6 +23,7 @@ module Api
           filter_by_category(filters[:category_ids]) if filters[:category_ids].present?
           filter_by_featured(filters[:featured]) if filters[:featured].present?
           filter_by_content(filters[:content]) if filters[:content].present?
+          filter_by_stock_available(filters[:stock_available]) if filters[:stock_available].present?
         end
 
         def filter_by_category(category_ids)
@@ -42,6 +43,12 @@ module Api
           end
 
           self.result = result.where(id: product_contents.pluck(:product_id))
+        end
+
+        def filter_by_stock_available(stock_available)
+          return unless stock_available == 'true'
+
+          self.result = result.with_available_stocks
         end
       end
     end
