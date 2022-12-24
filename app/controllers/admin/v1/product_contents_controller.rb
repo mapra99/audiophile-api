@@ -4,18 +4,28 @@ module Admin
       PRODUCT_CONTENT_ERROR_CODES = {
         product_content_not_saved: 500,
         invalid_product_content: 422,
-        product_not_found: 400
+        product_not_found: 400,
+        product_content_not_found: 400
       }.freeze
 
       PRODUCT_CONTENT_ERROR_MESSAGES = {
         product_content_not_saved: 'Could not save product',
         invalid_product_content: 'Content is invalid: ',
-        product_not_found: 'Could not find product'
+        product_not_found: 'Could not find product',
+        product_content_not_found: 'Could not find product content'
       }.freeze
 
       def create
         creator = Admin::V1::ProductContents::Creator.new(params: product_content_params)
         result = creator.call
+        return render_error_from(result) if result.failure?
+
+        @product_content = result.value!
+      end
+
+      def update
+        updater = Admin::V1::ProductContents::Updater.new(params: product_content_params)
+        result = updater.call
         return render_error_from(result) if result.failure?
 
         @product_content = result.value!
