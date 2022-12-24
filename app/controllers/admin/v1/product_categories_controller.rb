@@ -3,12 +3,14 @@ module Admin
     class ProductCategoriesController < BaseController
       PRODUCT_CATEGORY_ERROR_CODES = {
         product_category_not_saved: 500,
-        invalid_product_category: 422
+        invalid_product_category: 422,
+        category_not_found: 400
       }.freeze
 
       PRODUCT_CATEGORY_ERROR_MESSAGES = {
         product_category_not_saved: 'Could not save product',
-        invalid_product_category: 'Product is invalid: '
+        invalid_product_category: 'Product is invalid: ',
+        category_not_found: 'Could not find product category'
       }.freeze
 
       def create
@@ -25,6 +27,14 @@ module Admin
         return render_error_from(result) if result.failure?
 
         @product_categories = result.value!
+      end
+
+      def update
+        updater = Admin::V1::ProductCategories::Updater.new(category_id: params[:id], params: product_category_params)
+        result = updater.call
+        return render_error_from(result) if result.failure?
+
+        @product_category = result.value!
       end
 
       private
