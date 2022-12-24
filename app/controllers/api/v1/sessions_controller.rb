@@ -19,7 +19,7 @@ module Api
       private
 
       def client_ip
-        request.remote_ip
+        params[:client_ip] || request.remote_ip
       end
 
       def error_status_code(error)

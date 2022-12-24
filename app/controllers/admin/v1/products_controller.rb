@@ -2,12 +2,14 @@ module Admin
   module V1
     class ProductsController < BaseController
       PRODUCT_ERROR_CODES = {
+        product_not_found: 400,
         category_not_found: 400,
         product_not_saved: 500,
         invalid_product: 422
       }.freeze
 
       PRODUCT_ERROR_MESSAGES = {
+        product_not_found: 'Could not find product',
         category_not_found: 'Could not find product category',
         product_not_saved: 'Could not save product',
         invalid_product: 'Product is invalid: '
@@ -32,6 +34,14 @@ module Admin
       def show
         finder = Admin::V1::Products::Finder.new(product_id: params[:id])
         result = finder.call
+        return render_error_from(result) if result.failure?
+
+        @product = result.value!
+      end
+
+      def update
+        updater = Admin::V1::Products::Updater.new(product_id: params[:id], params: product_params)
+        result = updater.call
         return render_error_from(result) if result.failure?
 
         @product = result.value!

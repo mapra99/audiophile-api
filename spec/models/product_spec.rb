@@ -29,4 +29,20 @@ RSpec.describe Product, type: :model do
       expect(product.total_quantity).to eq(25)
     end
   end
+
+  describe '.with_available_stocks' do
+    subject(:result) { described_class.with_available_stocks }
+
+    before do
+      available_stock = create(:stock, quantity: 10)
+      create(:product, stocks: [available_stock])
+
+      empty_stock = create(:stock, quantity: 0)
+      create(:product, stocks: [empty_stock])
+    end
+
+    it 'returns only the products with available stocks' do
+      expect(result.count).to eq(1)
+    end
+  end
 end

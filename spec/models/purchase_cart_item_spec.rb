@@ -45,4 +45,17 @@ RSpec.describe PurchaseCartItem, type: :model do
       expect(stock.quantity).to eq(7)
     end
   end
+
+  describe '.sorted_by_creation' do
+    subject(:items) { described_class.all.sorted_by_creation }
+
+    before do
+      create(:purchase_cart_item, created_at: 3.days.from_now)
+      create(:purchase_cart_item, created_at: 1.day.ago)
+    end
+
+    it 'is sorted by created_at' do
+      expect(items[0].created_at).to be < items[1].created_at
+    end
+  end
 end

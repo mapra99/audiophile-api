@@ -8,6 +8,8 @@ class PurchaseCartItem < ApplicationRecord
   validates :unit_price, presence: true
   validates :stock_id, uniqueness: { scope: :purchase_cart_id }
 
+  scope :sorted_by_creation, -> { order(:created_at) }
+
   def total_price
     (unit_price * quantity).to_f
   end

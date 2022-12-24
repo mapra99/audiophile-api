@@ -9,6 +9,6 @@ if product_category.image.attached?
   end
 end
 
-json.products product_category.products do |product|
+json.products product_category.products.with_available_stocks do |product|
   json.partial! 'product', product: product
 end

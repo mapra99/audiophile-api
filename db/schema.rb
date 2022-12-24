@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_02_064845) do
+ActiveRecord::Schema.define(version: 2022_12_22_024311) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,6 +100,16 @@ ActiveRecord::Schema.define(version: 2022_10_02_064845) do
     t.index ["payment_id"], name: "index_orders_on_payment_id"
     t.index ["user_location_id"], name: "index_orders_on_user_location_id"
     t.index ["uuid"], name: "index_orders_on_uuid", unique: true
+  end
+
+  create_table "page_views", force: :cascade do |t|
+    t.bigint "session_id", null: false
+    t.string "page_path", null: false
+    t.string "query_params"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_path"], name: "index_page_views_on_page_path"
+    t.index ["session_id"], name: "index_page_views_on_session_id"
   end
 
   create_table "payment_events", force: :cascade do |t|
@@ -274,6 +284,7 @@ ActiveRecord::Schema.define(version: 2022_10_02_064845) do
   add_foreign_key "email_communications", "communications"
   add_foreign_key "orders", "payments"
   add_foreign_key "orders", "user_locations"
+  add_foreign_key "page_views", "sessions"
   add_foreign_key "payment_events", "payments"
   add_foreign_key "payments", "purchase_carts"
   add_foreign_key "payments", "users"
