@@ -39,3 +39,6 @@ Rails/UnknownEnv:
     - staging
     - test
     - development
+
+Style/RegexpLiteral:
+  Enabled: false
