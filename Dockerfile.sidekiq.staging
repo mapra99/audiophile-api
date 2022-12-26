@@ -23,4 +23,7 @@ RUN bundle install --no-cache
 # Copy the whole app
 COPY . /app
 
+# Schedule periodic jobs in crontab
+RUN bundle exec whenever --update-crontab
+
 CMD ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
