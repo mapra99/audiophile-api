@@ -30,7 +30,7 @@ json.toppings do
 end
 
 json.recommendations do
-  product.recommended_products.sample(3) do |recommended_product|
+  product.recommended_products do |recommended_product|
     json.partial! 'recommended_product', product: recommended_product
   end
 end
