@@ -40,6 +40,16 @@ module Api
         @user_location = result.value!
       end
 
+      def destroy
+        destroyer = Api::V1::Locations::Destroyer.new(
+          user_location_uuid: params[:uuid],
+          user: current_user
+        )
+
+        result = destroyer.call
+        return render_error_from(result) if result.failure?
+      end
+
       private
 
       def location_params

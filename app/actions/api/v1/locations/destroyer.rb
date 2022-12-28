@@ -1,10 +1,8 @@
 module Api
   module V1
     module Locations
-      class Finder
+      class Destroyer
         include Dry::Monads[:result]
-
-        attr_reader :user_location
 
         def initialize(user_location_uuid:, user:)
           self.user_location_uuid = user_location_uuid
@@ -13,8 +11,9 @@ module Api
 
         def call
           self.user_location = find_user_location
+          user_location.destroy!
 
-          Success(user_location)
+          Success(true)
         rescue ServiceError => e
           e.failure
         rescue StandardError => e
@@ -24,8 +23,7 @@ module Api
 
         private
 
-        attr_accessor :user_location_uuid, :user
-        attr_writer :user_location
+        attr_accessor :user_location_uuid, :user, :user_location
 
         def find_user_location
           self.user_location = user.user_locations.find_by!(uuid: user_location_uuid)
