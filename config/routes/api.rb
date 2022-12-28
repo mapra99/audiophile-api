@@ -15,7 +15,7 @@ namespace :api do
       post 'logout'
     end
     resources :sessions, only: %i[create], param: :uuid
-    resources :locations, only: %i[create index]
+    resources :locations, only: %i[create index show destroy], param: :uuid
     resources :payments, only: %i[create index]
     resources :page_views, only: %i[create]
   end
