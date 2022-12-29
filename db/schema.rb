@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_22_024311) do
+ActiveRecord::Schema.define(version: 2022_12_26_130358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,7 +108,9 @@ ActiveRecord::Schema.define(version: 2022_12_22_024311) do
     t.string "query_params"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "page_type"
     t.index ["page_path"], name: "index_page_views_on_page_path"
+    t.index ["page_type"], name: "index_page_views_on_page_type"
     t.index ["session_id"], name: "index_page_views_on_session_id"
   end
 
@@ -151,6 +153,24 @@ ActiveRecord::Schema.define(version: 2022_12_22_024311) do
     t.index ["key", "product_id"], name: "index_product_contents_on_key_and_product_id", unique: true
     t.index ["key"], name: "index_product_contents_on_key"
     t.index ["product_id"], name: "index_product_contents_on_product_id"
+  end
+
+  create_table "product_page_views", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "page_view_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["page_view_id"], name: "index_product_page_views_on_page_view_id"
+    t.index ["product_id"], name: "index_product_page_views_on_product_id"
+  end
+
+  create_table "product_recommendations", force: :cascade do |t|
+    t.bigint "product_id", null: false
+    t.bigint "recommendation_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["product_id"], name: "index_product_recommendations_on_product_id"
+    t.index ["recommendation_id"], name: "index_product_recommendations_on_recommendation_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -289,6 +309,10 @@ ActiveRecord::Schema.define(version: 2022_12_22_024311) do
   add_foreign_key "payments", "purchase_carts"
   add_foreign_key "payments", "users"
   add_foreign_key "product_contents", "products"
+  add_foreign_key "product_page_views", "page_views"
+  add_foreign_key "product_page_views", "products"
+  add_foreign_key "product_recommendations", "products"
+  add_foreign_key "product_recommendations", "products", column: "recommendation_id"
   add_foreign_key "products", "product_categories"
   add_foreign_key "purchase_cart_extra_fees", "purchase_carts"
   add_foreign_key "purchase_cart_items", "purchase_carts"

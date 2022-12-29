@@ -9,6 +9,10 @@ RSpec.describe Product, type: :model do
     it { is_expected.to belong_to(:product_category) }
     it { is_expected.to have_many(:stocks) }
     it { is_expected.to have_many(:toppings) }
+    it { is_expected.to have_many(:product_recommendations) }
+    it { is_expected.to have_many(:recommended_products).through(:product_recommendations) }
+    it { is_expected.to have_many(:product_page_views).dependent(:nullify) }
+    it { is_expected.to have_many(:page_views).through(:product_page_views) }
   end
 
   describe 'validations' do

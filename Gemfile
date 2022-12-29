@@ -40,6 +40,8 @@ gem 'aws-sdk-locationservice'
 # S3
 gem 'aws-sdk-s3'
 
+gem 'whenever', '~> 1.0.0'
+
 # Generate easily slugs for models https://github.com/norman/friendly_id
 gem 'friendly_id'
 
