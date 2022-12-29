@@ -2,9 +2,12 @@ module Api
   module V1
     class LocationsController < BaseController
       LOCATION_ERROR_CODES = {
-        invalid_location: 422
+        invalid_location: 422,
+        location_not_found: 400
       }.freeze
-      LOCATION_ERROR_MESSAGES = {}.freeze
+      LOCATION_ERROR_MESSAGES = {
+        location_not_found: 'Could not find location'
+      }.freeze
 
       def index
         collection_builder = Api::V1::Locations::CollectionBuilder.new(user: current_user)
@@ -23,6 +26,28 @@ module Api
         return render_error_from(result) if result.failure?
 
         @user_location = result.value!
+      end
+
+      def show
+        finder = Api::V1::Locations::Finder.new(
+          user_location_uuid: params[:uuid],
+          user: current_user
+        )
+
+        result = finder.call
+        return render_error_from(result) if result.failure?
+
+        @user_location = result.value!
+      end
+
+      def destroy
+        destroyer = Api::V1::Locations::Destroyer.new(
+          user_location_uuid: params[:uuid],
+          user: current_user
+        )
+
+        result = destroyer.call
+        return render_error_from(result) if result.failure?
       end
 
       private
