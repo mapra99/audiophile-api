@@ -145,4 +145,58 @@ RSpec.describe Api::V1::PaymentsController, type: :controller do
       end
     end
   end
+
+  describe '#show' do
+    let(:user) { create(:user) }
+    let(:payment) { create(:payment, user: user) }
+
+    let(:finder_result) do
+      instance_double('Finder Result', success?: true, failure?: false, value!: payment)
+    end
+    let(:finder) do
+      instance_double(
+        Api::V1::Payments::Finder,
+        call: finder_result
+      )
+    end
+
+    let(:access_token) { create(:access_token, user: user, status: AccessToken::ACTIVE) }
+
+    before do
+      allow(Api::V1::Payments::Finder).to receive(:new).and_return finder
+
+      request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['Authorization'] = "Bearer #{access_token.token}"
+      get :show, format: :json, params: { uuid: payment.uuid }
+    end
+
+    it 'calls the payments finder' do
+      expect(finder).to have_received(:call)
+    end
+
+    it 'returns a 200 status' do
+      expect(response.status).to eq 200
+    end
+
+    describe 'when finder fails due to internal error' do
+      let(:finder_result) do
+        instance_double('Finder Result', success?: false, failure?: true, failure: { code: :internal_error })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 500
+      end
+    end
+
+    describe 'when finder fails due to payment not found' do
+      let(:finder_result) do
+        instance_double('Finder Result', success?: false, failure?: true,
+                                         failure: { code: :payment_not_found, message: 'Error' })
+      end
+
+      it 'returns a 400 status' do
+        expect(response.status).to eq 400
+      end
+    end
+  end
 end
