@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::PurchaseCarts::Creator do
-  subject(:creator) { described_class.new(params: params, session: session) }
+  subject(:creator) { described_class.new(params: params, owner: session) }
 
+  let(:owner) { session }
   let(:session) { create(:session) }
   let(:params) do
     {
@@ -114,6 +115,29 @@ RSpec.describe Api::V1::PurchaseCarts::Creator do
 
       it 'returns the right error code' do
         expect(result.failure[:code]).to eq(:invalid_extra_fee)
+      end
+    end
+
+    describe 'when owner is a user' do
+      let(:owner) { user }
+      let(:user) { create(:user) }
+
+      it 'succeeds' do
+        expect(result.success?).to eq(true)
+      end
+  
+      it 'creates a new cart' do
+        expect { creator.call }.to change(PurchaseCart, :count).by(1)
+      end
+  
+      it 'calls the item generator service once per item' do
+        creator.call
+        expect(cart_item_generator).to have_received(:call).exactly(2)
+      end
+  
+      it 'calls the extra fees generator service' do
+        creator.call
+        expect(extra_fees_generator).to have_received(:call).exactly(1)
       end
     end
   end

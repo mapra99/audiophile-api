@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::PurchaseCarts::Finder do
-  subject(:finder) { described_class.new(cart_uuid: cart_uuid, session: session) }
+  subject(:finder) { described_class.new(cart_uuid: cart_uuid, owner: owner) }
 
+  let(:owner) { session }
   let(:session) { create(:session) }
   let(:cart) { create(:purchase_cart, session: session) }
   let(:cart_uuid) { cart.uuid }
@@ -29,6 +30,20 @@ RSpec.describe Api::V1::PurchaseCarts::Finder do
 
       it 'returns the right error code' do
         expect(result.failure[:code]).to eq(:cart_not_found)
+      end
+    end
+
+    describe 'when owner is user' do
+      let(:owner) { user }
+      let(:user) { create(:user) }
+      let(:cart) { create(:purchase_cart, user: user) }
+
+      it 'succeeds' do
+        expect(result.success?).to eq(true)
+      end
+
+      it 'returns the cart record' do
+        expect(result.value!).to eq(cart)
       end
     end
   end

@@ -4,9 +4,9 @@ module Purchases
       PurchaseCart::PAID
     ].freeze
 
-    def initialize(cart_uuid:, session:)
+    def initialize(cart_uuid:, owner:)
       self.cart_uuid = cart_uuid
-      self.session = session
+      self.owner = owner
     end
 
     def call
@@ -17,10 +17,10 @@ module Purchases
 
     private
 
-    attr_accessor :cart_uuid, :cart, :session
+    attr_accessor :cart_uuid, :cart, :owner
 
     def find_cart
-      self.cart = session.purchase_carts.find_by(uuid: cart_uuid)
+      self.cart = owner.purchase_carts.find_by(uuid: cart_uuid)
       raise CartNotFound, cart_uuid if cart.blank?
     end
 

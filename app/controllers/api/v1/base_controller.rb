@@ -1,8 +1,7 @@
 module Api
   module V1
     class BaseController < Api::BaseController
-      include TokenAuth
-      include SessionAuth
+      include GlobalAuth
 
       before_action :validate_api_key!
 

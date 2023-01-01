@@ -2,7 +2,7 @@ module Api
   module V1
     class PurchaseCartsController < BaseController
       skip_before_action :authenticate_user_by_token!
-      before_action :authenticate_session_by_header!
+      before_action :authenticate_session_or_user!
 
       PURCHASE_CART_ERROR_CODES = {
         cart_not_found: 404,
@@ -17,7 +17,7 @@ module Api
 
       def index
         collection_builder = Api::V1::PurchaseCarts::CollectionBuilder.new(
-          session: current_session,
+          owner: owner,
           filters: filter_params
         )
         result = collection_builder.call
@@ -27,7 +27,10 @@ module Api
       end
 
       def create
-        creator = Api::V1::PurchaseCarts::Creator.new(params: purchase_cart_params, session: current_session)
+        creator = Api::V1::PurchaseCarts::Creator.new(
+          params: purchase_cart_params,
+          owner: owner
+        )
         result = creator.call
         return render_error_from(result) if result.failure?
 
@@ -35,13 +38,19 @@ module Api
       end
 
       def destroy
-        destroyer = Api::V1::PurchaseCarts::Destroyer.new(cart_uuid: params[:uuid], session: current_session)
+        destroyer = Api::V1::PurchaseCarts::Destroyer.new(
+          cart_uuid: params[:uuid],
+          owner: owner
+        )
         result = destroyer.call
         return render_error_from(result) if result.failure?
       end
 
       def show
-        finder = Api::V1::PurchaseCarts::Finder.new(cart_uuid: params[:uuid], session: current_session)
+        finder = Api::V1::PurchaseCarts::Finder.new(
+          cart_uuid: params[:uuid],
+          owner: owner
+        )
         result = finder.call
         return render_error_from(result) if result.failure?
 
@@ -49,7 +58,10 @@ module Api
       end
 
       def update
-        updater = Api::V1::PurchaseCarts::Updater.new(params: purchase_cart_update_params, session: current_session)
+        updater = Api::V1::PurchaseCarts::Updater.new(
+          params: purchase_cart_update_params,
+          owner: owner
+        )
         result = updater.call
         return render_error_from(result) if result.failure?
 
@@ -57,6 +69,10 @@ module Api
       end
 
       private
+
+      def owner
+        current_user || current_session
+      end
 
       def purchase_cart_params
         params.permit(items: %i[quantity stock_uuid])

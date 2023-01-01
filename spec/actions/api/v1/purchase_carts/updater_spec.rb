@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::PurchaseCarts::Updater do
-  subject(:updater) { described_class.new(params: params, session: session) }
+  subject(:updater) { described_class.new(params: params, owner: owner) }
 
+  let(:owner) { session }
   let(:session) { create(:session) }
   let(:purchase_cart) { create(:purchase_cart, session: session, user_location: nil) }
   let(:user_location) do
@@ -53,6 +54,22 @@ RSpec.describe Api::V1::PurchaseCarts::Updater do
 
       it 'returns the right error code' do
         expect(result.failure[:code]).to eq(:cart_not_found)
+      end
+    end
+
+    describe 'when owner is user' do
+      let(:owner) { user }
+      let(:user) { create(:user) }
+      let(:purchase_cart) { create(:purchase_cart, user: user, user_location: nil) }
+
+      it 'succeeds' do
+        expect(result.success?).to eq(true)
+      end
+
+      it 'updates the cart user_location' do
+        updater.call
+
+        expect(purchase_cart.reload.user_location).to eq(user_location)
       end
     end
   end
