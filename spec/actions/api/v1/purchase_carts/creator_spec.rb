@@ -125,16 +125,16 @@ RSpec.describe Api::V1::PurchaseCarts::Creator do
       it 'succeeds' do
         expect(result.success?).to eq(true)
       end
-  
+
       it 'creates a new cart' do
         expect { creator.call }.to change(PurchaseCart, :count).by(1)
       end
-  
+
       it 'calls the item generator service once per item' do
         creator.call
         expect(cart_item_generator).to have_received(:call).exactly(2)
       end
-  
+
       it 'calls the extra fees generator service' do
         creator.call
         expect(extra_fees_generator).to have_received(:call).exactly(1)

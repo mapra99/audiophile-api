@@ -76,7 +76,7 @@ RSpec.describe Api::V1::PurchaseCarts::Destroyer do
       it 'succeeds' do
         expect(result.success?).to eq(true)
       end
-  
+
       it 'calls the cart canceler' do
         expect(cart_canceler).to have_received(:call)
       end
