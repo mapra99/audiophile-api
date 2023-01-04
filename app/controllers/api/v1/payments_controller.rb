@@ -5,6 +5,7 @@ module Api
         invalid_payment: 422,
         provider_error: 500,
         purchase_cart_not_found: 400,
+        payment_not_found: 400,
         invalid_purchase_cart: 400
       }.freeze
       PAYMENT_ERROR_MESSAGES = {}.freeze
@@ -31,6 +32,18 @@ module Api
         return render_error_from(result) if result.failure?
 
         @payments = result.value!
+      end
+
+      def show
+        finder = Api::V1::Payments::Finder.new(
+          payment_uuid: params[:uuid],
+          user: current_user
+        )
+
+        result = finder.call
+        return render_error_from(result) if result.failure?
+
+        @payment = result.value!
       end
 
       private
