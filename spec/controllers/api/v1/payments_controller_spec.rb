@@ -191,7 +191,7 @@ RSpec.describe Api::V1::PaymentsController, type: :controller do
     describe 'when finder fails due to payment not found' do
       let(:finder_result) do
         instance_double(
-          'Finder Result', 
+          'Finder Result',
           success?: false,
           failure?: true,
           failure: { code: :payment_not_found, message: 'Error' }
