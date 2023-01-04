@@ -1,12 +1,4 @@
 module TokenAuth
-  extend ActiveSupport::Concern
-
-  included do
-    before_action :authenticate_user_by_token!
-  end
-
-  private
-
   def authenticate_user_by_token!
     return head :unauthorized if current_user.blank?
   end

@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Purchases::CartCanceler do
-  subject(:canceler) { described_class.new(cart_uuid: cart_uuid, session: session) }
+  subject(:canceler) { described_class.new(cart_uuid: cart_uuid, owner: owner) }
 
+  let(:owner) { session }
   let(:session) { create(:session) }
   let(:cart) { create(:purchase_cart, status: cart_status, session: session) }
   let(:cart_uuid) { cart.uuid }
@@ -32,6 +33,20 @@ RSpec.describe Purchases::CartCanceler do
 
       it 'raises an error' do
         expect { canceler.call }.to raise_error(Purchases::InvalidStatusForCancelation)
+      end
+    end
+
+    describe 'when owner is user' do
+      let(:owner) { user }
+      let(:user) { create(:user) }
+      let(:cart) { create(:purchase_cart, status: cart_status, user: user) }
+
+      before do
+        canceler.call
+      end
+
+      it 'updates the cart status to canceled' do
+        expect(cart.reload.status).to eq(PurchaseCart::CANCELED)
       end
     end
   end

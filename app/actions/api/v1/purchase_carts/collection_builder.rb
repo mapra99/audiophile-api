@@ -4,13 +4,13 @@ module Api
       class CollectionBuilder
         include Dry::Monads[:result]
 
-        def initialize(session:, filters: {})
-          self.session = session
+        def initialize(owner:, filters: {})
+          self.owner = owner
           self.filters = filters
         end
 
         def call
-          self.result = session.purchase_carts
+          self.result = owner.purchase_carts
           self.result = filter_by_status
 
           Success(result)
@@ -23,7 +23,7 @@ module Api
 
         private
 
-        attr_accessor :result, :session, :filters
+        attr_accessor :result, :owner, :filters
 
         def filter_by_status
           return result if filters[:status].blank?

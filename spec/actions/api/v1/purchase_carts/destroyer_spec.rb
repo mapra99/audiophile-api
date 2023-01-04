@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::PurchaseCarts::Destroyer do
-  subject(:destroyer) { described_class.new(cart_uuid: cart_uuid, session: session) }
+  subject(:destroyer) { described_class.new(cart_uuid: cart_uuid, owner: session) }
 
+  let(:owner) { session }
   let(:session) { create(:session) }
   let(:cart) { create(:purchase_cart, session: session) }
   let(:cart_uuid) { cart.uuid }
@@ -65,6 +66,19 @@ RSpec.describe Api::V1::PurchaseCarts::Destroyer do
 
       it 'returns the right error code' do
         expect(result.failure[:code]).to eq(:invalid_status)
+      end
+    end
+
+    describe 'when owner is user' do
+      let(:owner) { user }
+      let(:user) { create(:user) }
+
+      it 'succeeds' do
+        expect(result.success?).to eq(true)
+      end
+
+      it 'calls the cart canceler' do
+        expect(cart_canceler).to have_received(:call)
       end
     end
   end

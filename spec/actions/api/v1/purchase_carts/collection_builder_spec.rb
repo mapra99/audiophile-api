@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::PurchaseCarts::CollectionBuilder do
-  subject(:builder) { described_class.new(session: session) }
+  subject(:builder) { described_class.new(owner: owner) }
 
+  let(:owner) { session }
   let(:session) { create(:session) }
 
   describe '#call' do
@@ -33,6 +34,23 @@ RSpec.describe Api::V1::PurchaseCarts::CollectionBuilder do
 
       it 'returns internal_error as failure code' do
         expect(result.failure[:code]).to eq(:internal_error)
+      end
+    end
+
+    describe 'when owner is user' do
+      let(:owner) { user }
+      let(:user) { create(:user) }
+
+      before do
+        create_list(:purchase_cart, 5, user: user, status: [PurchaseCart::PAID, PurchaseCart::CANCELED].sample)
+      end
+
+      it 'succeeds' do
+        expect(result.success?).to eq(true)
+      end
+
+      it 'returns an array with the purchse carts that belong to the session' do
+        expect(result.value!.count).to eq(5)
       end
     end
   end
