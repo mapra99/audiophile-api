@@ -25,4 +25,29 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:purchase_carts) }
     it { is_expected.to have_many(:payments) }
   end
+
+  describe '#latest_started_verification_code' do
+    subject(:user) { create(:user) }
+
+    let(:started_code) { create(:verification_code, user: user, status: VerificationCode::STARTED) }
+
+    before do
+      create_list(:verification_code, 10, user: user, status: VerificationCode::EXPIRED)
+      started_code
+    end
+
+    it 'returns the started code' do
+      expect(user.latest_started_verification_code).to eq(started_code)
+    end
+
+    describe 'when there is no started code' do
+      before do
+        started_code.update(status: VerificationCode::EXPIRED)
+      end
+
+      it 'returns nil' do
+        expect(user.latest_started_verification_code).to eq(nil)
+      end
+    end
+  end
 end

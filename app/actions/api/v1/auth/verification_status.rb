@@ -31,7 +31,7 @@ module Api
         end
 
         def find_verification_code
-          user.verification_codes.started.last
+          user.latest_started_verification_code
         end
       end
     end
