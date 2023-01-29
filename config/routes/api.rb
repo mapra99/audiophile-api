@@ -13,6 +13,7 @@ namespace :api do
       post 'login'
       post 'confirmation'
       post 'logout'
+      get 'verification_status'
     end
     resources :sessions, only: %i[create], param: :uuid
     resources :locations, only: %i[create index show destroy], param: :uuid

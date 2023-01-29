@@ -12,4 +12,8 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
   has_many :purchase_carts, through: :sessions
   has_many :payments, dependent: :destroy
+
+  def latest_started_verification_code
+    verification_codes.started.last
+  end
 end
