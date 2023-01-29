@@ -293,7 +293,8 @@ RSpec.describe Api::V1::AuthController, type: :controller do
 
     describe 'when verification status fails due to internal error' do
       let(:verification_status_result) do
-        instance_double('Verification Status Result', success?: false, failure?: true, failure: { code: :internal_error })
+        instance_double('Verification Status Result', success?: false, failure?: true,
+                                                      failure: { code: :internal_error })
       end
 
       it 'returns a 500 status' do
@@ -304,7 +305,7 @@ RSpec.describe Api::V1::AuthController, type: :controller do
     describe 'when verification status fails due to user not found' do
       let(:verification_status_result) do
         instance_double('Verification Status Result', success?: false, failure?: true,
-                                        failure: { code: :user_not_found, message: 'Not found' })
+                                                      failure: { code: :user_not_found, message: 'Not found' })
       end
 
       it 'returns a 400 status' do
