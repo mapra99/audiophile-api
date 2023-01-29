@@ -1,7 +1,7 @@
 module Api
   module V1
     class AuthController < BaseController
-      skip_before_action :authenticate_user_by_token!, only: %i[signup login confirmation]
+      skip_before_action :authenticate_user_by_token!, only: %i[signup login confirmation verification_status]
       before_action :authenticate_session_by_header!
 
       AUTH_ERROR_CODES = {
@@ -41,6 +41,14 @@ module Api
         logout_action = Api::V1::Auth::Logout.new(user: current_user, access_token: access_token)
         result = logout_action.call
         return render_error_from(result) if result.failure?
+      end
+
+      def verification_status
+        action = Api::V1::Auth::VerificationStatus.new(email: params[:email])
+        result = action.call
+        return render_error_from(result) if result.failure?
+
+        @verification_code = result.value!
       end
 
       private

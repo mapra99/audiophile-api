@@ -259,4 +259,57 @@ RSpec.describe Api::V1::AuthController, type: :controller do
       end
     end
   end
+
+  describe '#verification_status' do
+    let(:payload) do
+      { email: user_email }
+    end
+
+    let(:user) { create(:user) }
+    let(:user_email) { user.email }
+    let(:verification_code) { create(:verification_code, user: user, status: VerificationCode::STARTED) }
+
+    let(:verification_status_result) do
+      instance_double('Verification Status Result', success?: true, failure?: false, value!: verification_code)
+    end
+    let(:verification_status) { instance_double(Api::V1::Auth::VerificationStatus, call: verification_status_result) }
+    let(:session) { create(:session, user: user) }
+
+    before do
+      allow(Api::V1::Auth::VerificationStatus).to receive(:new).and_return verification_status
+
+      request.headers['X-AUDIOPHILE-KEY'] = 'audiophile'
+      request.headers['X-SESSION-ID'] = session.uuid
+      post :verification_status, format: :json, params: payload
+    end
+
+    it 'calls the login action' do
+      expect(verification_status).to have_received(:call)
+    end
+
+    it 'returns a 200 status' do
+      expect(response.status).to eq 200
+    end
+
+    describe 'when verification status fails due to internal error' do
+      let(:verification_status_result) do
+        instance_double('Verification Status Result', success?: false, failure?: true, failure: { code: :internal_error })
+      end
+
+      it 'returns a 500 status' do
+        expect(response.status).to eq 500
+      end
+    end
+
+    describe 'when verification status fails due to user not found' do
+      let(:verification_status_result) do
+        instance_double('Verification Status Result', success?: false, failure?: true,
+                                        failure: { code: :user_not_found, message: 'Not found' })
+      end
+
+      it 'returns a 400 status' do
+        expect(response.status).to eq 400
+      end
+    end
+  end
 end
