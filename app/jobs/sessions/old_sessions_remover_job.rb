@@ -5,7 +5,7 @@ module Sessions
     queue_as :default
 
     def perform
-      OldSessionsRemover.new.call
+      Sessions::OldSessionsRemover.new.call
     end
   end
 end
