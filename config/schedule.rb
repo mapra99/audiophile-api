@@ -22,3 +22,7 @@
 every :week do
   runner 'Recommendations::RecommendationsBuilderJob.perform_later'
 end
+
+every :month do
+  runner 'Sessions::OldSessionsRemoverJob.perform_later'
+end
