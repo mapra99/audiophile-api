@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_26_130358) do
+ActiveRecord::Schema.define(version: 2023_02_19_233745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -288,12 +288,13 @@ ActiveRecord::Schema.define(version: 2022_12_26_130358) do
 
   create_table "verification_codes", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "code_digest", null: false
+    t.string "code_digest"
     t.string "status", null: false
     t.datetime "expires_at", null: false
     t.string "expiration_job_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "channel", null: false
     t.index ["user_id"], name: "index_verification_codes_on_user_id"
   end
 

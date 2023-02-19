@@ -16,5 +16,13 @@ class VerificationCode < ApplicationRecord
     EXPIRED
   ].freeze
 
+  EMAIL_CHANNEL = 'email'.freeze
+  SMS_CHANNEL = 'sms'.freeze
+
+  CHANNELS = [
+    EMAIL_CHANNEL,
+    SMS_CHANNEL
+  ].freeze
+
   scope :started, -> { where(status: STARTED) }
 end
