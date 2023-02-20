@@ -39,7 +39,11 @@ module Api
         end
 
         def check_code
-          code_checker = Authentication::VerificationCodes::Checker.new(user: user, code: params[:code], channel: channel)
+          code_checker = Authentication::VerificationCodes::Checker.new(
+            user: user,
+            code: params[:code],
+            channel: channel
+          )
           code_checker.call
 
           self.verification_code = code_checker.verification_code

@@ -8,7 +8,7 @@ module Authentication
       CHANNEL_SENDER_MAPPING = {
         VerificationCode::SMS_CHANNEL => Sms::CodeSender,
         VerificationCode::EMAIL_CHANNEL => Email::CodeSender
-      }
+      }.freeze
 
       def initialize(user:, channel:)
         self.user = user
