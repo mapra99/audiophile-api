@@ -4,8 +4,9 @@ module Api
       class Signup
         include Dry::Monads[:result]
 
-        def initialize(params:)
+        def initialize(params:, channel:)
           self.params = params
+          self.channel = channel
         end
 
         def call
@@ -22,7 +23,7 @@ module Api
 
         private
 
-        attr_accessor :params, :user, :verification_code
+        attr_accessor :params, :user, :verification_code, :channel
 
         def create_user
           self.user = User.create!(
@@ -36,7 +37,7 @@ module Api
         end
 
         def generate_code
-          generator = Authentication::VerificationCodes::Generator.new(user: user)
+          generator = Authentication::VerificationCodes::Generator.new(user: user, channel: channel)
           generator.call
 
           self.verification_code = generator.verification_code

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_19_233745) do
+ActiveRecord::Schema.define(version: 2023_02_20_022128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -265,6 +265,20 @@ ActiveRecord::Schema.define(version: 2023_02_19_233745) do
     t.index ["product_id"], name: "index_toppings_on_product_id"
   end
 
+  create_table "twilio_verify_communications", force: :cascade do |t|
+    t.string "recipient", null: false
+    t.string "verification_sid", null: false
+    t.string "channel", null: false
+    t.string "service_sid", null: false
+    t.bigint "communication_id", null: false
+    t.string "target_type"
+    t.bigint "target_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["communication_id"], name: "index_twilio_verify_communications_on_communication_id"
+    t.index ["target_type", "target_id"], name: "index_twilio_verify_communications_on_target"
+  end
+
   create_table "user_locations", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "location_id", null: false
@@ -325,6 +339,7 @@ ActiveRecord::Schema.define(version: 2023_02_19_233745) do
   add_foreign_key "stock_toppings", "toppings"
   add_foreign_key "stocks", "products"
   add_foreign_key "toppings", "products"
+  add_foreign_key "twilio_verify_communications", "communications"
   add_foreign_key "user_locations", "locations"
   add_foreign_key "user_locations", "users"
   add_foreign_key "verification_codes", "users"

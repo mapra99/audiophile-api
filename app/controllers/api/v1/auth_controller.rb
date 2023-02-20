@@ -15,7 +15,7 @@ module Api
       AUTH_ERROR_MESSAGES = {}.freeze
 
       def signup
-        signup_action = Api::V1::Auth::Signup.new(params: user_params)
+        signup_action = Api::V1::Auth::Signup.new(params: user_params, channel: channel)
         result = signup_action.call
         return render_error_from(result) if result.failure?
       end
@@ -55,6 +55,10 @@ module Api
 
       def user_params
         params.permit(:name, :email, :phone)
+      end
+
+      def channel
+        params[:channel]
       end
 
       def confirmation_params
