@@ -15,6 +15,7 @@ module Authentication
       end
 
       def call
+        validate_channel
         find_code
         verify_code
         update_status
@@ -25,6 +26,10 @@ module Authentication
 
       attr_accessor :user, :code, :channel
       attr_writer :verification_code
+
+      def validate_channel
+        raise InvalidChannel, channel if VerificationCode::CHANNELS.none?(channel)
+      end
 
       def find_code
         self.verification_code = user.verification_codes.started.last
