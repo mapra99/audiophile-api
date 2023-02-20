@@ -21,7 +21,7 @@ module Api
       end
 
       def login
-        login_action = Api::V1::Auth::Login.new(email: params[:email])
+        login_action = Api::V1::Auth::Login.new(email: params[:email], channel: channel)
         result = login_action.call
         return render_error_from(result) if result.failure?
       end
