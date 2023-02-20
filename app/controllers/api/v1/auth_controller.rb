@@ -29,7 +29,8 @@ module Api
       def confirmation
         confirmation_action = Api::V1::Auth::Confirmation.new(
           params: confirmation_params,
-          session: current_session
+          session: current_session,
+          channel: channel
         )
         result = confirmation_action.call
         return render_error_from(result) if result.failure?

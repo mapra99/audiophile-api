@@ -6,11 +6,9 @@ module Authentication
       EXPIRATION_TIME = 5.minutes
       VERIFICATION_CODE_EMAIL_TEMPLATE = 'd-8dfeebf382ed485fac8c67bb35617c2d'.freeze
 
-      DEFAULT_CHANNEL = VerificationCode::EMAIL_CHANNEL
-
       def initialize(user:, channel:)
         self.user = user
-        self.channel = channel || DEFAULT_CHANNEL
+        self.channel = channel || VerificationCode::DEFAULT_CHANNEL
       end
 
       def call
