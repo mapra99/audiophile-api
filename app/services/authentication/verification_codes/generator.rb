@@ -4,7 +4,11 @@ module Authentication
       attr_reader :verification_code
 
       EXPIRATION_TIME = 5.minutes
-      VERIFICATION_CODE_EMAIL_TEMPLATE = 'd-8dfeebf382ed485fac8c67bb35617c2d'.freeze
+
+      CHANNEL_SENDER_MAPPING = {
+        VerificationCode::SMS_CHANNEL => Sms::CodeSender,
+        VerificationCode::EMAIL_CHANNEL => Sms::EmailSender,
+      }
 
       def initialize(user:, channel:)
         self.user = user
@@ -56,32 +60,11 @@ module Authentication
       end
 
       def send_code
-        if channel == VerificationCode::SMS_CHANNEL
-          send_twilio_code
-        else
-          send_email
-        end
+        code_sender.new(user: user, raw_code: raw_code).call
       end
 
-      def send_twilio_code
-        Communications::TwilioVerificationSenderJob.perform_later(
-          target: user,
-          channel: 'sms'
-        )
-      end
-
-      def send_email
-        Communications::EmailSenderJob.perform_later(
-          topic: Communication::VERIFICATION_CODE_TOPIC,
-          sender: EmailCommunication::AUTH_SENDER_EMAIL,
-          recipient: user.email,
-          template_id: VERIFICATION_CODE_EMAIL_TEMPLATE,
-          template_data: {
-            user_name: user.name,
-            verification_code: raw_code
-          },
-          target: user
-        )
+      def code_sender
+        @code_sender ||= CHANNEL_SENDER_MAPPING[channel]
       end
     end
   end

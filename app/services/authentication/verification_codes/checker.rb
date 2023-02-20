@@ -3,6 +3,11 @@ module Authentication
     class Checker
       attr_reader :verification_code
 
+      CHANNEL_VERIFIER_MAPPING = {
+        VerificationCode::SMS_CHANNEL => Sms::CodeVerifier,
+        VerificationCode::EMAIL_CHANNEL => Sms::EmailVerifier,
+      }
+
       def initialize(user:, code:, channel:)
         self.user = user
         self.code = code
@@ -27,11 +32,7 @@ module Authentication
       end
 
       def verify_code
-        if channel == VerificationCode::SMS_CHANNEL
-          Sms::CodeVerifier.new(verification_code: verification_code, raw_code: code).call
-        else
-          Email::CodeVerifier.new(verification_code: verification_code, raw_code: code).call
-        end
+        code_verifier.new(verification_code: verification_code, raw_code: code).call
       end
 
       def update_status
@@ -40,6 +41,10 @@ module Authentication
 
       def kill_expiration_job
         RevokerJob.kill!(verification_code.expiration_job_id)
+      end
+
+      def code_verifier
+        @code_verifier ||= CHANNEL_VERIFIER_MAPPING[channel]
       end
     end
   end

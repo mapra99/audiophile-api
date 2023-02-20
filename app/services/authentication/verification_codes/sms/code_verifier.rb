@@ -15,7 +15,7 @@ module Authentication
             code: raw_code
           )
 
-          raise IncorrectCode.new(verification_code.user.id, raw_code) unless verification_check.status == APPROVED_STATUS
+          raise IncorrectCode.new(verification_code.user.id, raw_code) if verification_check.status != APPROVED_STATUS
         end
 
         private
