@@ -5,7 +5,7 @@ module Authentication
 
       CHANNEL_VERIFIER_MAPPING = {
         VerificationCode::SMS_CHANNEL => Sms::CodeVerifier,
-        VerificationCode::EMAIL_CHANNEL => Sms::EmailVerifier,
+        VerificationCode::EMAIL_CHANNEL => Sms::EmailVerifier
       }
 
       def initialize(user:, code:, channel:)
