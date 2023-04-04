@@ -1,13 +1,38 @@
 # Audiophile e-commerce API
 
-This is the API for Audiophile, an e-commerce site.
-The project is in progress, it's not stable yet. Give it a star and subscribe if you like it so far :) 
+This is the API for Audiophile, an e-commerce site. Even though it can be used independently, you can find the UI that consumes this API [here](https://github.com/mapra99/audiophile)
+
+## Main features
+
+This API contains the core functionality that a common e-commerce system would need:
+- Products system with categories, toppings and stocks
+- Super basic headless CMS to modify the content and details of each product
+- An Admin namespace to create or edit all of the above
+- OTP authentication via email
+- Checkout flow with purchase carts, sign up/login, shipping address with geolocation and credit/debit card payment with Stripe
+- Basic comms such as payment confirmation or failure emails
+- Orders system to track purchase status after payment
 
 ## API Docs
 You can find [the API documentation here](https://documenter.getpostman.com/view/10455715/UzQvsjmL)
 
-## ERD
-![]("./docs/../../docs/erd.png)
+## Technologies
+
+- Ruby
+- Rails
+- PostgreSQL
+- Redis
+- Sidekiq
+- RSpec
+- Docker
+
+### Vendors
+
+- AWS S3 for assets storage
+- AWS Location service for address geocoding
+- SendGrid for Email Comms
+- Stripe for payments
+- Fly.io for hosting of demo app
 
 ## Installation Instructions
 
@@ -18,12 +43,17 @@ You can find [the API documentation here](https://documenter.getpostman.com/view
   ```bash
     mkdir ../tmp
   ```
-3. Run docker-compose in development mode
+3. Create a .env file based on the existing .env.example file_
+  ```bash
+    cp .env.example .env
+  ```
+4. Follow the instructions on the .env file regarding the vendors variables that need  to be configured
+5. Run docker-compose in development mode
   ```bash
   cd docker/development
   docker-compose up --build
   ```
-4. Open a new terminal and setup the database
+6. Open a new terminal and setup the database
   ```bash
   docker-compose run web rails db:setup
   ```
@@ -79,26 +109,29 @@ brew services start postgresql
 bundle install
 ```
 
-8. Run rails db migrations
-```
-rails db:migrate
+8. Create a .env file based on the existing .env.example file_
+```bash
+  cp .env.example .env
 ```
 
-9. Install redis
+9. Follow the instructions on the .env file regarding the vendor variables that need to be configured
+
+10. Set up the database
+```
+rails db:setup
+```
+
+11.  Install redis
 ```
 brew install redis
 ```
 
-10. Start redis as a service
+12.  Start redis as a service
 ```
 brew services start redis
 ```
 
-11. Set up the ENV file
-- Create a file called `.env` on the project root
-- Set the env variables (ask a teammate for them)
-
-12. Start the rails server
+13.  Start the rails server
 ```
 rails server
 ```
@@ -109,7 +142,7 @@ rails server
 bundle exec sidekiq
 ```
 
-2. Go to http://localhost:3000/eng/sidekiq to monitor the jobs
+2. Go to http://localhost:3000/eng/sidekiq to monitor the jobs. Use the values defined in the `ADMIN_HTTP_USERNAME` and `ADMIN_HTTP_PASSWORD` env variables to login.
 
 #### Quickstart
 
@@ -132,4 +165,3 @@ rails db:migrate
 ```
 rails server
 ```
-
