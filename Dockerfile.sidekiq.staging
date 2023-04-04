@@ -23,6 +23,10 @@ RUN bundle install --no-cache
 # Copy the whole app
 COPY . /app
 
+# Remove seed data and assets
+RUN rm -rf db/seeds
+RUN rm -rf db/seed.rb
+
 # Schedule periodic jobs in crontab
 RUN bundle exec whenever --update-crontab
 
