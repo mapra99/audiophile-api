@@ -23,5 +23,9 @@ RUN bundle install --no-cache
 # Copy the whole app
 COPY . /app
 
+# Remove seed data and assets
+RUN rm -rf db/seeds
+RUN rm -rf db/seed.rb
+
 EXPOSE 3000
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
