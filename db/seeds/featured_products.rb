@@ -93,7 +93,8 @@ module Seeds
           params: {
             product_id: product.id,
             key: 'featured_description',
-            content: 'Experience natural, lifelike audio and exceptional build quality made for the passionate music enthusiast.'
+            content: "Experience natural, lifelike audio and exceptional build quality made for the passionate \
+                      music enthusiast."
           }
         ).call
         ### MARK II HEADPHONES END
@@ -295,9 +296,9 @@ module Seeds
           params: {
             product_id: product.id,
             key: 'description',
-            content: "Tailor your listening experience with bespoke dynamic drivers from the new YX1 Wireless Earphones. \
-                      Enjoy incredible high-fidelity sound even in noisy environments with its active noise cancellation \
-                      feature."
+            content: "Tailor your listening experience with bespoke dynamic drivers from the new YX1 Wireless \
+                      Earphones. Enjoy incredible high-fidelity sound even in noisy environments with its \
+                      active noise cancellation feature."
           }
         ).call
 
