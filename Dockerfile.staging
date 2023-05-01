@@ -30,4 +30,5 @@ RUN rm -rf db/seed.rb
 # Schedule periodic jobs in crontab
 RUN bundle exec whenever --update-crontab
 
-CMD ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+EXPOSE 3000
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
