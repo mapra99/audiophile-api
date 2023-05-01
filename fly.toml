@@ -4,7 +4,7 @@
 #
 
 app = "audiophile-api-stg"
-primary_region = "bog"
+primary_region = "sjc"
 kill_signal = "SIGINT"
 kill_timeout = "5s"
 
@@ -18,7 +18,7 @@ kill_timeout = "5s"
   release_command = "bundle exec rails db:migrate"
 
 [env]
-  PRIMARY_REGION = "bog"
+  PRIMARY_REGION = "sjc"
 
 [processes]
   web = "bundle exec puma -C config/puma.rb"
