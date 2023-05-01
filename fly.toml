@@ -1,23 +1,30 @@
 # fly.toml file generated for audiophile-api-stg on 2022-12-10T21:02:12-05:00
 
 app = "audiophile-api-stg"
+primary_region = "bog"
 kill_signal = "SIGINT"
-kill_timeout = 5
-processes = []
-
-[build]
-  dockerfile = "./Dockerfile.api.staging"
-
-[env]
+kill_timeout = "5s"
 
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
 
+[build]
+  dockerfile = "./Dockerfile.staging"
+
+[deploy]
+  release_command = "bundle exec rails db:migrate"
+
+[env]
+
+[processes]
+  web = "bundle exec puma -C config/puma.rb"
+  worker = "bundle exec sidekiq -C config/sidekiq.yml"
+
 [[services]]
   http_checks = []
   internal_port = 3000
-  processes = ["app"]
+  processes = ["web"]
   protocol = "tcp"
   script_checks = []
   [services.concurrency]
@@ -39,6 +46,3 @@ processes = []
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
-
-[deploy]
-  release_command = "bundle exec rails db:migrate"
