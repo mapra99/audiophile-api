@@ -91,7 +91,7 @@ Follow the printed instructions
 
 4. Restart your terminal, and install ruby 
 ```
-rbenv install 3.0.4
+rbenv install 3.2.2
 ```
 
 5. Install postgresql
@@ -142,7 +142,7 @@ rails server
 bundle exec sidekiq
 ```
 
-2. Go to http://localhost:3000/eng/sidekiq to monitor the jobs. Use the values defined in the `ADMIN_HTTP_USERNAME` and `ADMIN_HTTP_PASSWORD` env variables to login.
+2. Go to http://localhost:3001/eng/sidekiq to monitor the jobs. Use the values defined in the `ADMIN_HTTP_USERNAME` and `ADMIN_HTTP_PASSWORD` env variables to login.
 
 #### Quickstart
 
