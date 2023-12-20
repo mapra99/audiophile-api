@@ -1,5 +1,5 @@
-# gets the docker image of ruby 3.0.4 and lets us build on top of that
-FROM ruby:3.0.4-alpine
+# gets the docker image of ruby 3.2.2 and lets us build on top of that
+FROM ruby:3.2.2-alpine
 
 # install rails dependencies
 RUN apk add --update --no-cache build-base postgresql-dev postgresql-client git
