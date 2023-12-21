@@ -25,14 +25,8 @@ Geocoder.configure(
   #   prefix: 'geocoder:'
   # }
   ip_lookup: :ipinfo_io,
-  lookup: :amazon_location_service,
-  amazon_location_service: {
-    index_name: 'audiophile_explore_index',
-    api_key: {
-      access_key_id: ENV.fetch('AWS_GEOCODE_ACCESS_KEY_ID'),
-      secret_access_key: ENV.fetch('AWS_GEOCODE_SECRET_ACCESS_KEY')
-    }
-  },
+  lookup: :geoapify,
+  api_key: ENV.fetch('GEOAPIFY_API_KEY', nil),
   cache: Redis.new(
     url: ENV.fetch('REDIS_URL', 'redis://redis:6379'),
     username: ENV.fetch('REDIS_USERNAME', nil),
