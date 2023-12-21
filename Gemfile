@@ -46,6 +46,8 @@ gem 'whenever', '~> 1.0.0'
 gem 'friendly_id'
 
 gem 'net-smtp'
+gem 'net-imap'
+gem 'net-pop'
 
 # Geocode addresses and IPs
 gem 'geocoder', '~> 1.8.0'
