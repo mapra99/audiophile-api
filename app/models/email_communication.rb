@@ -6,8 +6,8 @@ class EmailCommunication < ApplicationRecord
 
   validates :sender, :recipient, :template_id, :template_data, presence: true
 
-  AUTH_SENDER_EMAIL = 'auth@audiophiley.com'
-  PAYMENTS_SENDER_EMAIL = 'payments@audiophiley.com'
+  AUTH_SENDER_EMAIL = 'auth@audiophile.lat'
+  PAYMENTS_SENDER_EMAIL = 'payments@audiophile.lat'
 
   SENDERS = [
     AUTH_SENDER_EMAIL,
