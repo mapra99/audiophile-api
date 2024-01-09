@@ -4,8 +4,9 @@ module Api
       class Login
         include Dry::Monads[:result]
 
-        def initialize(email:)
+        def initialize(email:, channel:)
           self.email = email
+          self.channel = channel
         end
 
         def call
@@ -22,7 +23,7 @@ module Api
 
         private
 
-        attr_accessor :email, :user, :verification_code
+        attr_accessor :email, :user, :verification_code, :channel
 
         def find_user
           self.user = User.find_by(email: email)
@@ -32,7 +33,7 @@ module Api
         end
 
         def generate_code
-          generator = Authentication::VerificationCodes::Generator.new(user: user)
+          generator = Authentication::VerificationCodes::Generator.new(user: user, channel: channel)
           generator.call
 
           self.verification_code = generator.verification_code

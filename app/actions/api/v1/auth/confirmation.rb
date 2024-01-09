@@ -6,9 +6,10 @@ module Api
 
         attr_reader :access_token
 
-        def initialize(params:, session:)
+        def initialize(params:, session:, channel:)
           self.params = params
           self.session = session
+          self.channel = channel
         end
 
         def call
@@ -27,7 +28,7 @@ module Api
 
         private
 
-        attr_accessor :params, :user, :verification_code, :session
+        attr_accessor :params, :user, :verification_code, :session, :channel
         attr_writer :access_token
 
         def find_user
@@ -38,7 +39,11 @@ module Api
         end
 
         def check_code
-          code_checker = Authentication::VerificationCodes::Checker.new(user: user, code: params[:code])
+          code_checker = Authentication::VerificationCodes::Checker.new(
+            user: user,
+            code: params[:code],
+            channel: channel
+          )
           code_checker.call
 
           self.verification_code = code_checker.verification_code

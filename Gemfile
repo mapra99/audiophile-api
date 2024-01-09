@@ -19,6 +19,9 @@ gem 'bcrypt', '~> 3.1.7'
 # Email delivery vendor
 gem 'sendgrid-ruby', '~> 6.6.0'
 
+# SMS comms vendor
+gem 'twilio-ruby', '~> 5.74.3'
+
 # Background jobs management
 gem 'sidekiq', '~> 6.5'
 

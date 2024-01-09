@@ -8,6 +8,7 @@ RSpec.describe Communication, type: :model do
   end
 
   describe 'associations' do
-    it { is_expected.to have_many(:email_communications) }
+    it { is_expected.to have_one(:email_communication) }
+    it { is_expected.to have_one(:twilio_verify_communication) }
   end
 end

@@ -116,6 +116,10 @@ GEM
       railties (>= 5.0.0)
     faker (2.21.0)
       i18n (>= 1.8.11, < 2)
+    faraday (2.7.4)
+      faraday-net_http (>= 2.0, < 3.1)
+      ruby2_keywords (>= 0.0.4)
+    faraday-net_http (3.0.2)
     ffi (1.15.5)
     formatador (1.1.0)
     friendly_id (5.4.2)
@@ -144,6 +148,7 @@ GEM
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
     jmespath (1.6.1)
+    jwt (2.6.0)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -265,6 +270,7 @@ GEM
     rubocop-rspec (2.11.1)
       rubocop (~> 1.19)
     ruby-progressbar (1.11.0)
+    ruby2_keywords (0.0.5)
     ruby_http_client (3.5.5)
     sendgrid-ruby (6.6.2)
       ruby_http_client (~> 3.4)
@@ -292,6 +298,10 @@ GEM
     stripe (7.1.0)
     thor (1.2.1)
     timeout (0.3.0)
+    twilio-ruby (5.74.3)
+      faraday (>= 0.9, < 3.0)
+      jwt (>= 1.5, <= 2.6)
+      nokogiri (>= 1.6, < 2.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2022.4)
@@ -349,6 +359,7 @@ DEPENDENCIES
   simplecov
   spring
   stripe (~> 7.1.0)
+  twilio-ruby (~> 5.74.3)
   tzinfo-data
   vcr
   webmock

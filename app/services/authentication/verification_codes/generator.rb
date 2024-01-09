@@ -4,33 +4,52 @@ module Authentication
       attr_reader :verification_code
 
       EXPIRATION_TIME = 5.minutes
-      VERIFICATION_CODE_EMAIL_TEMPLATE = 'd-8dfeebf382ed485fac8c67bb35617c2d'.freeze
 
-      def initialize(user:)
+      CHANNEL_SENDER_MAPPING = {
+        VerificationCode::SMS_CHANNEL => Sms::CodeSender,
+        VerificationCode::EMAIL_CHANNEL => Email::CodeSender
+      }.freeze
+
+      def initialize(user:, channel:)
         self.user = user
+        self.channel = channel || VerificationCode::DEFAULT_CHANNEL
       end
 
       def call
+        validate_channel
+
         create_code
         schedule_expiration
-        send_email
+
+        send_code
       end
 
       private
 
-      attr_accessor :user, :raw_code
+      attr_accessor :user, :raw_code, :channel, :generator
       attr_writer :verification_code
 
+      def validate_channel
+        raise InvalidChannel, channel if VerificationCode::CHANNELS.none?(channel)
+      end
+
       def create_code
-        self.raw_code = format('%06d', rand(0..999_999))
+        self.raw_code = generate_raw_code
         self.verification_code = VerificationCode.create!(
           user: user,
           code: raw_code,
+          channel: channel,
           expires_at: EXPIRATION_TIME.from_now,
           status: VerificationCode::STARTED
         )
       rescue ActiveRecord::RecordInvalid => e
         raise InvalidCode, [e.message]
+      end
+
+      def generate_raw_code
+        return if channel == VerificationCode::SMS_CHANNEL # Twilio will generate the code on its own
+
+        format('%06d', rand(0..999_999))
       end
 
       def schedule_expiration
@@ -40,18 +59,12 @@ module Authentication
         ).call
       end
 
-      def send_email
-        Communications::EmailSenderJob.perform_later(
-          topic: Communication::VERIFICATION_CODE_TOPIC,
-          sender: EmailCommunication::AUTH_SENDER_EMAIL,
-          recipient: user.email,
-          template_id: VERIFICATION_CODE_EMAIL_TEMPLATE,
-          template_data: {
-            user_name: user.name,
-            verification_code: raw_code
-          },
-          target: user
-        )
+      def send_code
+        code_sender.new(user: user, raw_code: raw_code).call
+      end
+
+      def code_sender
+        @code_sender ||= CHANNEL_SENDER_MAPPING[channel]
       end
     end
   end

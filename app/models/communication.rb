@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Communication < ApplicationRecord
-  has_many :email_communications, dependent: :destroy
+  has_one :email_communication, dependent: :destroy
+  has_one :twilio_verify_communication, dependent: :destroy
 
   validates :topic, presence: true
 
